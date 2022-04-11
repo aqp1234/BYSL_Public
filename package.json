@@ -1,0 +1,43 @@
+{
+  "name": "mit",
+  "version": "0.0.1",
+  "description": "4학년 졸업작품 프로젝트",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app",
+    "mongo": "start mongo.cmd",
+    "mongoshell": "start mongoshell.cmd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/aqp1234/MIT"
+  },
+  "author": "KMS",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "lru-cache": "^6.0.0",
+    "mongoose": "^5.12.7",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "mysql2": "^2.2.5",
+    "nodemailer": "^6.6.3",
+    "npm": "^7.23.0",
+    "nunjucks": "^3.2.3",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "request": "^2.88.2",
+    "sequelize": "^6.9.0",
+    "sequelize-cli": "^6.3.0",
+    "socket.io": "^4.1.1",
+    "ws": "^7.5.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

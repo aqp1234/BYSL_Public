@@ -1,0 +1,9 @@
+node_modules
+uploads
+config/config.json
+venv/
+*.pyc
+mongo.cmd
+mongoshell.cmd
+*.cmd
+package-lock.json

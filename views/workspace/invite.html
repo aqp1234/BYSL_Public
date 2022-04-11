@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/invite.css">
+</head>
+
+<body>
+    <form id="join-form" action="" method="post">
+        <div class="input-group">
+            <label for="nick">Nick Name</label><br> <!-- 닉네임 입력 -->
+            <input id="nick" type="text" name="nick">
+        </div>
+        </div>
+        <div class="input-group">
+            <label for="color">Your Color</label><br> <!-- 워크스페이스 내부 개인 고유 색상 입력 -->
+            <input id="color" type="color" name="color">
+        </div>
+        </div>
+        <button id="workspace-btn" type="button" class="btn" onclick="onSubmit()">Invite Workspace</button>
+    </form>
+</body>
+<script>
+    const onSubmit = () => {
+        const form = document.getElementById('join-form');
+        if(!form.nick.value){
+            alert("닉네임을 입력해주세요");
+        }else{
+            form.submit();
+        }
+    }
+</script>
+
+</html>

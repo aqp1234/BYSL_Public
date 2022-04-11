@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Invite</title>
+    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+    <link rel="stylesheet" href="/css/staff_invite_popup.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <form id="join-form" action="" method="post">
+        <div class="input-group">
+            <div for="staff_email" id="invite_email_text">초대 받을 관계자 이메일</div>
+            <div><input id="staff_email" type="email" name="staff_email"></div>
+        </div>
+        <input type="hidden" name="url" id="url">
+        <input type="hidden" name="type" id="type">
+        <div style="text-align: center; margin-top: 10px;"><button id="new_staff_btn" type="button" class="btn" onclick="staffinvitesubmit()">New Staff Invite ✔</button></div>
+    </form>
+    <hr/>
+    <div class="container">
+        <div class="text_invite_table">초대 목록</div>
+        <table width="95%" style="border-spacing: 15px;">
+            <thead>
+                <tr style="font-size: 15px;">
+                    <th width="25%" scope="col" class="staff_name">이름</th>
+                    <th width="60%" scope="col" class="staff_email">이메일</th>
+                    <th width="15%" scope="col" class="staff_delete">삭제</th>
+                </tr>
+            </thead>
+            <tbody id="search_tbody">
+                {% for staffinvite in staffinvites %}
+                <tr>
+                    <td class='staff_name'>{% if(staffinvite.staff_name) %} {{ staffinvite.staff_name }} {% else %} 미가입자 {% endif %}</td>
+                    <td class='staff_email'>{{ staffinvite.staff_email }}</td>
+                    <td data-staff_email="{{staffinvite.staff_email}}" onclick='deleteStaffInvite(this)'>
+                        <input class='choose' type='button' value='삭제'>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const deleteStaffInvite = async(e) => {
+            if(confirm("초대를 취소하시겠습니까?")){
+                await fetch(location.pathname, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        staff_email: e.dataset.staff_email,
+                        url: opener.location.pathname,
+                    }),
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    alert(data.msg);
+                    location.href="";
+                })
+                .then((err) => {
+                    alert(err.msg);
+                    location.href="";
+                });
+            }
+            
+        }
+        const email_check = (email) => {    
+            var regex=/([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            return (regex.test(email)); 
+        }
+        document.addEventListener("keydown", (e) => {
+            if(e.keyCode == 13){
+                e.preventDefault();
+                staffinvitesubmit();
+            }
+        });
+        const staffinvitesubmit = () => {
+            const form = document.getElementById('join-form');
+            const type = opener.document.getElementById('staffinvitebtn').dataset['type'];
+            form.url.value = opener.location.pathname;
+            form.type.value = type;
+            if(!form.staff_email.value){
+                alert('이메일을 입력해주세요.');
+            }else if(!email_check(form.staff_email.value)){
+                alert('이메일 형식으로 입력해주세요.');
+            }else{
+                form.submit();
+            }
+        }
+    </script>
+</body>
+</html>

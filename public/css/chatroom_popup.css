@@ -1,0 +1,46 @@
+  .dim-layer3 {
+    display: none;
+    position: fixed;
+    _position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+  }
+  
+  .dim-layer3 .dimBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: .5;
+    filter: alpha(opacity=50);
+  }
+
+  .dim-layer3 .pop-layer{
+    display: block;
+  }
+
+  #add_chatroom{
+    border-radius: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  input{
+    width: 200px;
+    height: 25px;
+    padding: 2px 5px;
+    margin-right: 15px;
+  }
+
+  #room-btn{
+    font-family: 'Noto Sans KR', sans-serif;
+    border-radius: 5px;
+    height: 30px;
+    border: 1px solid rgb(191, 226, 171);
+    background-color: rgb(191, 226, 171);
+    color: #fff;
+  }

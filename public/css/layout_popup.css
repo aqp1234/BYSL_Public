@@ -1,0 +1,192 @@
+.pop-layer .pop-container, .pop-layer2 .pop-container2, .invite_pop-layer .invite_pop-container {
+    padding: 20px 25px;
+  }
+  
+  .pop-layer p.ctxt, .pop-layer2 p.ctxt, .invite_pop-layer p.ctxt {
+    color: #666;
+    line-height: 25px;
+  }
+  .pop-conts, .invite_pop-conts {
+    text-align: center;
+  }
+  
+  .pop-layer .btn-r, .pop-layer2 .btn-r, .invite_pop-layer .btn-r {
+    width: 100%;
+    margin: 10px 0 20px;
+    padding-top: 10px;
+    border-top: 1px solid #DDD;
+    text-align: center;
+    font-weight: bolder;
+    color: rgb(70, 70, 70);
+  }
+  
+  .pop-layer, .pop-layer2, .invite_pop-layer {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 410px;
+    height: auto;
+    background-color: #fff;
+    border: 5px solid rgb(226, 240, 217);
+    z-index: 10;
+  }
+  
+  .dim-layer, .dim-layer2, .invite_dim-layer {
+    display: none;
+    position: fixed;
+    _position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+  }
+  
+  .dim-layer .dimBg, .invite_dim-layer .invite_dimBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: .5;
+    filter: alpha(opacity=50);
+  }
+  .dim-layer2 .dimBg2{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: .5;
+    filter: alpha(opacity=50);
+  }
+  .dim-layer .pop-layer, .invite_dim-layer .invite_pop-layer{
+    display: block;
+  }
+  .dim-layer2 .pop-layer2 {
+      display: block;
+  }
+  a.btn-Ok, a.btn-No {
+    display: inline-block;
+    height: 30px;
+    padding: 0 14px 0;
+    border: 1px solid rgb(191, 226, 171);
+    background-color: rgb(191, 226, 171);
+    font-size: 13px;
+    color: #fff;
+    line-height: 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 5px;
+  }
+  
+  a.btn-Ok:hover, a.btn-No:hover {
+    border: 1px solid rgb(253, 236, 184);
+    background-color: rgb(253, 236, 184);
+    color: #fff;
+  }
+
+  a.btn-close {
+    display: inline-block;
+    height: 25px;
+    padding: 0 14px 0;
+    font-size: 13px;
+    color: gray;
+    line-height: 25px;
+    text-decoration: none;
+    font-weight: bolder;
+  }
+  
+  .btn-c {
+    text-align: right;
+  }
+
+  button.btn-add{
+    display: inline-block;
+    height: 25px;
+    padding: 0 14px 0;
+    border: 1px solid #304a8a;
+    background-color: #3f5a9d;
+    font-size: 13px;
+    color: #fff;
+    line-height: 25px;
+  }
+  button.btn-send{
+    display: inline-block;
+    height: 25px;
+    padding: 0 14px 0;
+    border: 1px solid #304a8a;
+    background-color: #3f5a9d;
+    font-size: 13px;
+    color: #fff;
+    line-height: 25px;
+  }
+
+  #workspace-select-layer{
+    border-radius: 5px;
+  }
+
+/* 팀 워크스페이스 초대 메일 발송 팝업 css */
+
+  #invite-workspace-layer{
+    border-radius: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  #join-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #email{
+    width: 200px;
+    height: 25px;
+    padding: 2px 5px;
+    margin-right: 15px;
+  }
+
+  #workspace-btn{
+    font-family: 'Noto Sans KR', sans-serif;
+    border-radius: 5px;
+    height: 30px;
+    border: 1px solid rgb(191, 226, 171);
+    background-color: rgb(191, 226, 171);
+    color: #fff;
+  }
+
+  #workspace-btn:hover, #workspace-btn:hover {
+    border: 1px solid rgb(253, 236, 184);
+    background-color: rgb(253, 236, 184);
+    color: #fff;
+  }
+
+  .inputGradeRatio1{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    width: 20px;
+    background-color: #e3f8ce;
+    border: 0;
+  }
+
+  .inputGradeRatio2{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    width: 20px;
+    background-color: #d6f8f8;
+    border: 0;
+  }
+
+  .inputGradeRatio3{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    width: 20px;
+    background-color: #fae4ef;
+    border: 0;
+  }

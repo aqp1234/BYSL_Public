@@ -1,0 +1,26 @@
+<!-- 이건 안쓰는 html 인가요..??? 승원에게 -민석- -->
+<!-- (승원) 이것 역시 안쓰는거 -->
+<!-- 사용자 별 워크스페이스 메뉴바 -->
+<!-- 구현해야 할 내용 : 메뉴바 우측 중앙에 ▶ 버튼 위치 / 9글자 이상 입력된 경우 ... 처리 -->
+
+{% block content %}
+    {% if user %}
+    <link rel="stylesheet" type="text/css" href="/css/client_side_bar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+        <button id="show" onclick="if(wrap.style.display=='none') {wrap.style.display='';show.innerText='◀'} else {wrap.style.display='none';show.innerText='▶'}">◀</button>
+        <span id="wrap">
+            <nav class="menu_wrap"> 
+                <ul class="menu"> 
+                    {% for workspace in workspaces %}
+                    <li class="menu_list">  
+                        <a href='/workspace/{{workspace.id}}' class="menu_text">{{workspace.workspacename}}</a> 
+                    </li>
+                    {% endfor %} 
+                    <li class="plus_menu">  
+                        <a class='plus' href='/workspace/add'>+</a> 
+                    </li>
+                </ul>
+            </nav> 
+        </span>
+    {% endif %}
+{% endblock %}

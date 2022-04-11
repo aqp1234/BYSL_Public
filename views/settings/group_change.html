@@ -1,0 +1,182 @@
+{% extends 'layout.html' %}
+
+{% block title %}Modify Group Permissions{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="/css/team_settings.css">
+
+<div class="container">
+    <div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <span class="text_add_group">그룹 권한 수정</span>
+            <div class="submit">
+                {% if group.is_admin %}
+                <button type="button" class="delete_group_btn" onclick="delete_group()" data-group_id="{{ group.id }}" disabled>Delete Group</button>
+                <input id="group_submit_button" type="button" value="Change Group" onclick="submitForm()" disabled>
+                {% elif group.is_guest %}
+                <button type="button" class="delete_group_btn" onclick="delete_group()" data-group_id="{{ group.id }}" disabled>Delete Group</button>
+                <input id="group_submit_button" type="button" value="Change Group" onclick="submitForm()">
+                {% else %}
+                <button type="button" class="delete_group_btn" onclick="delete_group()" data-group_id="{{ group.id }}">Delete Group</button>
+                <input id="group_submit_button" type="button" value="Change Group" onclick="submitForm()">
+                {% endif %}
+            </div>
+        </div>
+        <div><hr size="3" noshade color="FDECB8" style="margin-top: 20px;"/></div>
+        <form action="" method="post" id="group_form">
+            <fieldset style="border: 0px">
+                <div class="group_name">
+                    <span class="text_add_group_input">그룹 이름</span>
+                    <input type="text" name="group_name" value="{{ group.name }}" maxlength="40" required id="group_name">
+                </div>
+                <div class="selector">
+                    <div class="selector-available">
+                        <div class="available_permissions">Available permissions</div>
+                        <select name="permissions_available" id="permissions_from" multiple="" class="filtered" style="height: 268px;">
+                            {% for permission in permissions_available %}
+                            <option value="{{ permission.id }}">{{ permission.name }}</option>
+                            {% endfor %}
+                        </select><a href="#" id="add_all_permissions" class="selector-chooseall active">Choose all ✔</a>
+                    </div>
+                    <ul class="selector-chooser" style="list-style: none">
+                        <li><a title="Choose" href="#" id="add_permissions" class="selector-add active">▶</a></li>
+                        <li><a title="Remove" href="#" id="remove_permissions" class="selector-remove active">◀</a></li>
+                    </ul>
+                    <div class="selector-chosen">
+                        <div class="chosen_permissions">Chosen permissions</div>
+                        <select name="permissions_chosen" id="permissions_to" multiple="" style="height: 268px;">
+                            {% for permission in permissions_chosen %}
+                            <option value="{{ permission.id }}">{{ permission.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <a href="#" id="remove_all_permissions" class="selector-clearall active">Remove all ✔</a>
+                    </div>
+                </div>
+                <div class="help">* 여러개 선택하려면 드래그 하거나 Ctrl을 누르고 클릭하세요. (Mac의 경우 Command)</div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    const permissions_from = document.getElementById('permissions_from');
+    const permissions_to = document.getElementById('permissions_to');
+    const choose_all = document.getElementById('add_all_permissions');
+    const add_link = document.getElementById('add_permissions');
+    const remove_link = document.getElementById('remove_permissions');
+    const clear_all = document.getElementById('remove_all_permissions');
+    choose_all.addEventListener('click', (e) => {
+        const options = permissions_from.options;
+        [...options].forEach((option) => {
+            option.selected = true;
+            permissions_to.appendChild(option);
+        });
+    });
+    add_link.addEventListener('click', (e) => {
+        const options = permissions_from.selectedOptions;
+        [...options].forEach((option) => {
+            option.selected = true;
+            permissions_to.appendChild(option);
+        });
+    });
+    remove_link.addEventListener('click', (e) => {
+        const options = permissions_to.selectedOptions;
+        [...options].forEach((option) => {
+            option.selected = false;
+            permissions_from.appendChild(option);
+        });
+    });
+    clear_all.addEventListener('click', (e) => {
+        const options = permissions_to.options;
+        [...options].forEach((option) => {
+            option.selected = false;
+            permissions_from.appendChild(option);
+        });
+    });
+    const submitForm = async () => {
+        const form = document.getElementById('group_form');
+        const options = [...form.permissions_to.options]
+        const values = options.map((option) =>{
+            return option.value;
+        });
+        await fetch(location.pathname, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                group_name: form.group_name.value,
+                permissions: values
+            })
+        })
+        .then((res) => res.json())
+        .then((data) =>{
+            alert(data.msg);
+            location.href=data.url;
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+    }
+    const delete_group = async() => {
+        if(confirm("정말로 삭제하시겠습니까?")){
+            await fetch(location.pathname, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then((res) => res.json())
+            .then((data) =>{
+                alert(data.msg);
+                location.href=data.url;
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+        }
+    }
+</script>
+{% endblock %}
+
+{% block style %}
+<style>
+.selector-chooser a, .selector-chooser a:visited, #add_all_permissions, #remove_all_permissions{
+    color: blue;
+    text-decoration: none;
+}
+
+.selector ul.selector-chooser {
+    float: left;
+    width: 22px;
+    background-color: var(--selected-bg);
+    border-radius: 10px;
+    margin: 10em 5px 0 5px;
+    padding: 0;
+}
+.form-row {
+    overflow: hidden;
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--hairline-color);
+}
+
+.selector-available, .selector-chosen {
+    float: left;
+    width: 380px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.selector select {
+    padding: 0 10px;
+    margin: 0 0 10px;
+    border-radius: 0 0 4px 4px;
+    width: 380px;
+    height: 17.2em;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,38 @@
+img{
+    width: 70px;
+    height: auto;
+}
+
+#logo{
+    position: relative;
+    top: 23px;
+    left: 20px;
+}
+
+#top{
+    display: flex;
+    justify-content: space-between;
+}
+
+#top_right{
+    margin-right: 5px;
+    display: flex;
+}
+
+.nav-link{
+    font-size: 11px;
+    color: rgb(66, 65, 65);
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.name{
+    font-size: 15px;
+    color: rgb(66, 65, 65);
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.user_color{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}

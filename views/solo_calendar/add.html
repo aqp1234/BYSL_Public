@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Solo Calendar</title>
+    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+    <link rel="stylesheet" href="/css/add_calendar.css">
+    <link rel="stylesheet" href="/css/add_solo_calendar.css">
+    <link rel="stylesheet" type="text/css" href="/css/find_school.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <form id="join-form" action="" method="post">
+        <div class="input-group">
+            <div class="input-what">Subject</div> <!-- calendar 제목 입력 -->
+            <input id="subject" type="text" name="subject"></div>
+        </div>
+        <div class="input-group">
+            <div class="input-what">Content</div> <!-- 세부내용 입력 -->
+            <input id="content" type="text" name="content"></div>
+        </div>
+        <div class="input-group">
+            <div class="input-what">Start Date</div> <!-- 시작 날짜 입력 -->
+            <input id="start_date" type="date" name="start_date"></div>
+        </div>
+        <div class="input-group">
+            <div class="input-what">End Date</div> <!-- 끝 날짜 입력 -->
+            <input id="end_date" type="date" name="end_date"></div>
+        </div>
+        <button id="calendar-btn" type="button" class="btn" onclick="calendarsubmit()">New Solo calendar</button>
+    </form>
+    <script>
+        start_date.addEventListener("change", (e) => {
+            end_date.min = e.target.value;
+        });
+        end_date.addEventListener("change", (e) => {
+            start_date.max = e.target.value;
+        });
+        const calendarsubmit = () => {
+            const form = document.getElementById('join-form');
+            if(!form.subject.value){
+                alert('제목을 입력해주세요.');
+            }else if(!form.content.value){
+                alert('내용을 입력해주세요.');
+            }else if(!form.start_date.value){
+                alert('시작날짜를 입력해주세요.');
+            }else if(!form.end_date.value){
+                alert('종료날짜를 입력해주세요.');
+            }else if(form.end_date.value < form.start_date.value){
+                alert('시작날짜는 종료날짜보다 느릴 수 없습니다.');
+            }else{
+                form.submit();
+            }
+        }
+    </script>
+</body>
+</html>

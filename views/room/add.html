@@ -1,0 +1,19 @@
+<!-- 채팅방 생성 팝업창으로 변경으로 해당 html 미사용 예정 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/css/room_add.css">
+</head>
+<body>
+     <form id="join-form" action="/room/{{user_workspace.workspace_id}}/add" method="post">
+      <div class="input-group">
+        <label for="room-name">Room Name</label><br> <!-- 채팅방 명 입력 -->
+         <input id="room-name" type="text" name="roomname"></div>
+      </div>
+      <button id="room-btn" type="submit" class="btn">New Room</button>
+     </form>
+</body>
+</html>

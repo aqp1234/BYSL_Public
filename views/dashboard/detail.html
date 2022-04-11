@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block title %}Dashboard - Detail{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="/css/dashboard.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet"> <!-- 한국어 글꼴 -->
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet"> <!-- 영어 글꼴 -->
+<a href='/dashboard/{{user_workspace.workspace_id}}' id='exit-btn'>◀</a>
+<span class="detail_text_button"><a href='/dashboard/{{user_workspace.workspace_id}}/change/{{dashboard._id}}' class="text_deco10">글 수정</a></span>
+<span class="detail_text_button"><a href='/dashboard/{{user_workspace.workspace_id}}/delete/{{dashboard._id}}' class="text_deco10">글 삭제</a></span>
+
+<div id="detail_top">
+    <hr class="line_deco01" width = "100%" color="#414141">
+        <div class="detail_title">{{dashboard.subject}}</div>
+    <hr class="line_deco01" width = "100%" color="#414141">
+    <div id="detail_date">
+        <table style="width: 100%;">
+            <tr>
+                <td class="detail_date_deco01">시작일 : <span class="detail_date_deco02">{{dashboard.start_date}}</span></td>
+                <td class="detail_date_deco01">종료일 : <span class="detail_date_deco02">{{dashboard.end_date}}</span></td>
+                <td class="detail_date_deco03">대시보드 작성자 : <span class="detail_date_deco04">{{dashboard.user_name}}</span></td>
+                <td class="detail_date_deco05">담당자 : <span class="detail_date_deco06">{{dashboard.manager_name}}</span></td>
+            </tr>
+        </table>
+    </div>
+    <hr class="line_deco01" width = "100%" color="#414141">
+</div>
+<!-- 글이 길어질 경우 스크롤 처리 해놓음 -->
+<div readonly id="detail_body">{{dashboard.content}}</div>
+<hr class="line_deco01" width = "100%" color="#414141">
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
+<script>
+    const dates = document.getElementsByClassName("detail_date_deco02");
+    for(i = 0; i < dates.length; i++){
+        dates[i].textContent = moment(dates[i].textContent).format('LL');
+    }
+</script>
+<script>
+    const body = document.getElementById('detail_body');
+    body.innerHTML = body.innerText;
+</script>
+{% endblock %}

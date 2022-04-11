@@ -1,0 +1,62 @@
+img{
+    position: absolute;
+    top: 5%;
+    left: 3%;
+    width: 100px;
+    height: auto;
+}
+
+#login-form{
+     background-color: #f1f1f1;
+     position: absolute;
+     text-align: center;
+     top: 50%;
+     left: 50%;
+     padding-top: 70px;
+     line-height: 1.2; 
+     margin:-240px 0 0 -350px;
+     width: 700px;
+     height: 72.5%;
+}
+
+.input-group{
+    text-align: center;
+    font-size : 30px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+input{
+    width : 400px;
+    height: 30px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.question{
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-bottom: 10px;
+}
+
+.login{
+    background-color: white;
+    font-size: 20px;
+    width: 200px;
+    height: 40px;
+    border-radius: 5px;
+    font-family: 'Ubuntu', sans-serif;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 0;
+    outline: 0;
+}
+
+.login:hover{
+    background-color: rgb(66, 66, 66);
+    color: white;
+}
+
+.join{
+    font-family: 'Noto Sans KR', sans-serif;
+    color: rgb(150, 150, 150);
+}

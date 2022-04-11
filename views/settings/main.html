@@ -1,0 +1,217 @@
+{% extends 'layout.html' %}
+
+{% block title %}Settings{% endblock %}
+
+<link rel="stylesheet" type="text/css" href="/css/settings.css">
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="/css/team_settings.css">
+
+<div id="settings_body">
+    <!-- 사용자 권한 그룹 설정 -->
+    <div id="select_user_permission_group">
+        <span class="text_deco01"><span>[ {{workspace.workspacename}} ]</span> 내부 사용자 권한 설정</span>
+        <div readonly id="detail_body">
+            <table id="select_user_permission_group_table">
+                <tr style="text-align: center; font-size: 16px; background-color: #e7e7e7; font-weight: bold; color: rgb(66, 65, 65);">
+                    {% if workspace.owner === user.id %}
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 25%;">이메일</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 22.5%;">사용자 이름</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 22.5%;">권한그룹</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 15%;">설정</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 15%;">사용자 삭제</td>
+                    {% else %}
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 30%;">이메일</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 25%;">사용자 이름</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 25%;">권한그룹</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 20%;">설정</td>
+                    {% endif %}
+                </tr>
+                {% for user_workspace in user_workspaces %}
+                    <tr>
+                        <td><span class="user_email">{{ user_workspace.user.email }}</span></td>
+                        <td><span class="user_name">{{ user_workspace.user.name }}</span></td>
+                        <td style="text-align: center;">
+                            {% if workspace.owner === user_workspace.user.id %}
+                            <select class="user_select" disabled>
+                            {% else %}
+                            <select  class="user_select">
+                            {% endif %}
+                                {% for group in groups %}
+                                    {% if group.id == user_workspace.group_id %}
+                                    <option value="{{ group.id }}" selected>{{ group.name }}</option>
+                                    {% else %}
+                                    <option value="{{ group.id }}">{{ group.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td style="text-align: center;">
+                            {% if 25 in my_permissions_id %}
+                            <button type="button" class="set_group" onclick="set_group(this)" data-user_id="{{ user_workspace.user_id }}">그룹 설정</button>
+                            {% else %}
+                            <button type="button" class="set_group" disabled>그룹 설정</button>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center;">
+                            {% if workspace.owner == user.id %}
+                            <button type="button" class="delete_user" data-user_id="{{ user_workspace.user_id }}" onclick="delete_user(this)">사용자 삭제</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+    <!-- 그룹 권한 설정 -->
+    <div id="make_user_permission_group">
+        <div class="text_deco01">
+            <span style="margin-right: 10px;">권한 그룹</span>
+            {% if 21 in my_permissions_id %}
+                <a href="/settings/{{ user_workspace.workspace_id }}/group" class="text_deco02" style="text-decoration: none; color: rgb(66, 65, 65);">+</a>
+            {% endif %}
+        </div>
+        <div readonly id="detail_body">
+            <table id="make_user_permission_group_list_table">
+                <tr style="text-align: center; font-size: 16px; background-color: #e7e7e7; font-weight: bold; color: rgb(66, 65, 65);">
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 30%;">그룹명</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 70%;">권한 정보</td>
+                </tr>
+                {% for group in groups %}
+                <tr>
+                    <td><span class="group_name">{{ group.name }}</span></td>
+                    <td>
+                        {% if group.is_admin %}
+                        <span style="margin-left: 10px;">All Permission Access (Default) / 모든 기능 접근 허용(기본값)</span>
+                        {% elif group.is_guest %}
+                            <span style="margin-left: 10px;">Default Group for invited People</small>
+                            {% if 23 in my_permissions_id %}
+                            <a href="/settings/{{ user_workspace.workspace_id }}/group/{{ group.id }}">그룹 권한 설정</a>
+                            {% endif %}
+                        {% else %}
+                            {% if 23 in my_permissions_id %}
+                            <a style="margin-left: 10px;" href="/settings/{{ user_workspace.workspace_id }}/group/{{ group.id }}">그룹 권한 설정</a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+    <!-- 사용자 초대 정보 -->
+    <div id="invite_info">
+        <span class="text_deco01">초대 정보</span>
+        <div readonly id="detail_body">
+            <table style="border-spacing: 5px 10px; width: 100%;">
+                <tr style="text-align: center; font-size: 16px; background-color: #e7e7e7; font-weight: bold; color: rgb(66, 65, 65);">
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 30%;">초대 받는 이메일</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 20%;">초대 보낸 사용자</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 40%;">초대 보낸 시각</td>
+                    <td style="padding: 5px; border-radius: 5px 5px 0 0; width: 10%;">초대 취소</td>
+                </tr>
+                {% for invite in invites %}
+                <tr>
+                    <td><span class="invite_email">{{ invite.email }}</span></td>
+                    <td><span class="invite_user_name">{{ invite.user_name }}</span></td>
+                    <td><span class="invite_createdAt">{{ invite.createdAt }}</span></td>
+                    <td style="text-align: center;">
+                        {% if 20 in my_permissions_id %}
+                        <button type="button" class="invite_reject" onclick="invite_reject(this)" data-invite_id="{{ invite.id }}" style="text-align: center;">Reject</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+    <!-- 내 권한 정보 -->
+    <div id="my_permissions_list">
+        <span class="text_deco01">내 권한 정보</span>
+        <div readonly id="detail_body" style="margin-top: -5px;">
+            <ol>
+                {% for permission in my_permissions %}
+                <li style="margin-bottom: 5px;">
+                    <div class="permission_list">
+                        <span class="permission_name">{{ permission.name }}</span>
+                    </div>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    const invite_reject = async (e) => {
+        const invite_id = e.dataset.invite_id;
+        await fetch(`${location.pathname}/invite`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                invite_id: invite_id
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.msg);
+            location.href = data.url;
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    }
+</script>
+<script>
+    const set_group = async (button) => {
+        const select = button.parentNode.previousElementSibling.childNodes[1];
+        await fetch(`${location.pathname}/set_group`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_id: button.dataset.user_id,
+                group_id: select.options[select.selectedIndex].value
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.msg);
+            location.href = data.url;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+    const delete_user = (e) => {
+        const user_id = e.dataset.user_id;
+        if(confirm('정말 사용자를 삭제하시겠습니까?')) {
+            fetch(`${location.pathname}/user`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: user_id,
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.msg);
+                location.href = data.url;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }
+    }
+</script>
+{% endblock %}

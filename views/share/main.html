@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block title %}Share - Main{% endblock %}
+
+{% block content %}
+<!-- 자료 공유방 메인 화면 -->
+    <link rel="stylesheet" type="text/css" href="/css/share.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+
+    <div id="main_top">
+        <span class="text_deco01">자료 공유</span>
+        <a href="/share/{{user_workspace.workspace_id}}/add" class="text_deco02">+</a>
+    </div>
+    <hr width = "100%" color="#414141" size = "3">
+    <table id="table_top">
+        <tr>
+            <td class="text_deco03">NO</td>
+            <td class="text_deco04">DATE</td>
+            <td class="text_deco05">제목</td>
+            <td class="text_deco06">작성자</td>
+        </tr>
+    </table>
+    <hr width = "100%" color="#414141" size = "2">
+    <table id="table_body">
+        <tbody>
+        {% for share in shares %}
+          <tr>
+                <td class="text_deco07">{{loop.index}}</td>
+                <td class="text_deco08">{{share.createdAt}}</td>
+                <td class="text_deco09"><a href="/share/{{user_workspace.workspace_id}}/detail/{{share._id}}">{{share.subject}}</a></td>
+                <td class="text_deco10">{{share.user_name}}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
+<script>
+    const dates = document.getElementsByClassName("text_deco08");
+    for(i = 0; i < dates.length; i++){
+        dates[i].textContent = moment(dates[i].textContent).format('LL');
+    }
+</script>
+{% endblock %}

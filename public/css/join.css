@@ -1,0 +1,61 @@
+img{
+    position: absolute;
+    top: 5%;
+    left: 3%;
+    width: 100px;
+    height: auto;
+}
+
+#join-form{
+    background-color: #f1f1f1;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    padding-top: 70px;
+    line-height: 1.2;
+    margin:-240px 0 0 -350px;
+    width: 700px;
+    border-radius: 10px;
+}
+
+.input-group{
+    text-align: center;
+    font-size : 23px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+input, a{
+    width : 400px;
+    height: 40px;
+    padding: 1px 5px 1px 5px;
+    border-radius: 5px;
+    border-width: 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#join-btn{
+    background-color: #bdd7ff8c;
+    font-size: 18px;
+    width: 400px;
+    height: 40px;
+    border-radius: 5px;
+    font-family: 'Ubuntu', sans-serif;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border: 0;
+    outline: 0;
+}
+
+#join-btn:hover{
+    background-color: rgb(59, 59, 59);
+    color: white;
+}
+
+.join-email-number{
+    font-size: 18px;
+    font-family: 'Ubuntu', sans-serif;
+    border: 0;
+    background-color: #bdd7ff8c;
+}

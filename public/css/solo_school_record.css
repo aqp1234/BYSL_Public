@@ -1,0 +1,177 @@
+/* 메인 */
+
+@media screen and (min-width:100px){
+    /* li{list-style-type: none;}
+    ul,li{list-style:none;margin-left: -12px;} */
+    .basic-body-main{padding:0;}
+    .sub-page p, .sub-page li {word-break:keep-all;font-size:13px}
+    .sub-title {position:relative;font-size:37px;color:#333;margin:10px 0 70px;font-weight:300}
+    .sub-title small {display:block;margin-top:10px;font-size:13px;border-top:1px solid #333;padding-top:10px}
+    label input{width:50px;text-align:center;}
+    .input-button{min-width:150px; display: flex; align-items: center; margin: 0px 5px;}
+    .ulSubject li{display:table; width:100%;}
+    .ulSubject li a{display:block;border-bottom:1px solid #ccc;padding:10px 0;text-align:center;}
+    .ulSubject li a:hover{color:rgb(191, 226, 171);}
+    .modal-content{max-height:500px;overflow-y:scroll;}
+    .wrapResults h4{padding:10px 0;}
+    .modal-content{max-height:900px;}
+    .table-bordered{font-family: 'Noto Sans KR', sans-serif; }
+    .table-list-eb .table-bordered>tbody>tr>td {border:1px solid #D5D5D5;}
+    .btnClose{display:block;width:100%;height:50px;line-height:50px;text-align:center;background:rgb(191, 226, 171);color:#fff;}
+    .btnClose:hover{color:#fff;}
+    .wrapBlind{display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:4000;}
+    .wrapBlind .skoolBlind{display:block;position:absolute;top:50%;left:50%;width:300px;height:600px;margin-top:-300px;margin-left:-150px;background:#fff;}
+    .wrapBlind .skoolBlind .subjectBody{overflow-y:scroll;height:550px;}
+    .skoolBlind{border-radius: 10px; font-weight: bolder;}
+    a{cursor:pointer;}
+    .wrapFilter{padding:20px 0;}
+    .text-center{display: flex; align-items: center; justify-content: center; margin-top: 25px;}
+}
+
+iframe{
+    width: 99.5%; 
+    height: 600px; 
+    overflow-y: scroll; 
+}
+
+#main_top{
+    display: flex; 
+    justify-content: flex-end; 
+    align-items: center;
+    margin-bottom: 15px;
+    font-family: 'Noto Sans KR', sans-serif; 
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+.board_entry{
+    text-decoration: none;
+    margin-right: 15px;
+    color: rgb(66, 65, 65);
+    font-size: 16px;
+}
+
+.pdf_input{
+    text-decoration: none;
+    margin-left: 15px;
+    margin-right: 5px;
+    color: rgb(66, 65, 65);
+    font-size: 20px;
+}
+
+.wrapFilter{
+    display: flex;
+    justify-content: space-evenly;
+    background-color: rgb(253, 236, 184);
+    border-radius: 5px;
+    margin: 10px 0px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.btnSubjectSearch{
+    /* 과목 검색 버튼 */
+    margin-left: 10px;
+
+}
+
+#btnGetResults{
+    /* 성적 산출하기 버튼 */
+    color: rgb(66, 65, 65);
+    width: 200px;
+    /* height: 50px; */
+    padding: 15px 0;
+    border: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: rgb(236, 236, 236);
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+
+}
+
+#btnGetResultsRetry{
+    color: rgb(66, 65, 65);
+    margin-left: 30px;
+    width: 200px;
+    /* height: 50px; */
+    padding: 15px 0;
+    border: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: rgb(236, 236, 236);
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#btnGetResultsRetry:hover,  #btnGetResults:hover{
+	background-color: #bdbcbc;
+    color: rgb(252, 248, 248);
+}
+
+.tit3{
+    background-color: rgb(253, 236, 184);
+    border-radius: 5px;
+    padding: 15px 0px;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+#gradeTableMap{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#gradeTable{
+    width: 100%;
+    text-align: center;
+    border-spacing: 10px;
+}
+
+#totalGradeTable{
+    width: 100%;
+    text-align: center;
+    border-spacing: 10px;
+}
+
+.cal_btn{
+    margin-top: 10px;
+    border: none;
+    padding: 15px 10px;
+    font-weight: bolder;
+    border-radius: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 추가 */
+
+/* 상세보기 */
+#detailTop{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bolder;
+    background-color: rgb(253, 236, 184);
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+}
+
+/* 수정 */
+#fileDelete{
+    margin-left: 15px; 
+    display: flex; 
+    align-items: center;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+}
+
+.outputfile{
+    margin-right: 10px;
+}

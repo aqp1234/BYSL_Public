@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/css/login.css">
+    </head>
+    <body>
+    <div id="logo"><img src="/img/logo3.png" alt="logo"></div>
+    <form id="login-form" action="/auth/login" method="post">
+        <div class="input-group">
+            <label for="email">Email Adress</label><br>
+            <input class="email" type="email" name="email" required autofocus>
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label><br>
+            <input class="password" type="password" name="password" required>
+        </div>
+        <button class="login" type="submit" class="btn">Login</button><br>
+        <div>
+            <div class="question">아직 회원이 아니신가요? </div>
+            <a class="join" href="/auth/join?type=student" class="btn">학생 회원가입</a>
+            <a class="join" href="/auth/join?type=staff" class="btn">관계자 회원가입</a>
+        </div>  
+    </form>
+    </body>
+
+    <script>
+        window.onload = () => {
+            const next = new URLSearchParams(location.search).get('next');
+            if(next){
+                document.getElementById('login-form').action += `?next=${next}`;
+            }
+        }
+    </script>
+</html>

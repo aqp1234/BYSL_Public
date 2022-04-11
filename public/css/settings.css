@@ -1,0 +1,33 @@
+html, body {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bolder;
+}
+
+.testdiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 70px;
+}
+
+#qu{
+    font-size: 17px;
+}
+
+#delete-btn{
+    font-size: 17px;
+    margin-top: 10px;
+    text-decoration: none;
+    padding: 2px 10px 2px 10px;
+    border-radius: 5px;
+    height: 30px;
+    border: 1px solid rgb(191, 226, 171);
+    background-color: rgb(191, 226, 171);
+    color: #fff;
+}
+
+#delete-btn:hover{
+    border: 1px solid rgb(253, 236, 184);
+    background-color: rgb(253, 236, 184);
+    color: #fff;
+  }

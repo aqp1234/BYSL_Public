@@ -1,0 +1,145 @@
+{% extends 'layout.html' %}
+
+{% block title %}Room - Main{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="/css/room_main.css">
+<link rel="stylesheet" type="text/css" href="/css/chatroom_popup.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div id="room_main_box">
+    <div class="br"><a href="#add_chatroom" class="chat_maker"><span class="text_deco_01">+</span><span class="text_deco_02">채팅방 생성</span></a></div>
+    <!-- 여기부터 채팅방생성 버튼 눌렀을때 팝업으로 보여주는 내용 -->
+    <div class="dim-layer3">
+        <div class="dimBg"></div>
+        <div id="add_chatroom" class="pop-layer">
+            <div class="pop-container">
+                <div class="pop-conts">
+                    <div class="btn-c">
+                        <a href="#" class="btn-close">Close ✖</a>
+                    </div>
+                    <!--content //-->
+                    <div class="btn-r">
+                        채팅방 이름을 입력해주세요.
+                    </div>
+                    <form id="join-form" action="/room/{{user_workspace.workspace_id}}/add" method="post">
+                        <span class="input-group">
+                            <input id="room-name" type="text" name="roomname">
+                        </span>
+                        <button id="room-btn" type="submit" class="btn-add">New Room</button>
+                    </form>
+                    <div class="btn-r">
+                    </div>
+                    <!--// content-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 여기까지 팝업 내용 -->
+    <div id="check_chat_room">
+        {% for chatroom in chatrooms %}
+        <!-- 배경 색상 채팅방 만든 사람 색상으로 지정 할 수 있도록 할 것 : 우선적으로 사용자(본인) 색상 받아오는 코드로 대체 -->
+        <div id="chat_room_show" style="background-color: {{user_workspace.color}};">
+            <span class="chatroomname">{{chatroom.roomname}}</span> <!--채팅방 이름-->
+            <!-- 채팅방 번호 대신 참여자 목록 : 3명 이상 반환시 [ ex) wonni, mini, juni 외 5명 ] 과 같이 표기 -->
+            <span class="lastchat">{{lastchats[chatroom._id]}}</span> <!--마지막 채팅-->
+            <span><button data-id='{{chatroom._id}}' class='join-btn'>입장</button><span>
+        </div>
+        {% endfor %}
+        <div class="error-message">{{error}}</div>
+    </div>
+</div>
+    
+{% endblock %}
+
+{% block script %}
+<script src="../socket.io/socket.io.js"></script>
+<script>
+    const socket = io.connect(window.location.origin + "/room", { path: "/socket.io" });
+    socket.on('newRoom', function(data){
+        const tr = document.createElement('tr');
+        let td = document.createElement('td');
+        td.textContent = data._id;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = data.roomname;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        const button = document.createElement('button');
+        button.textContent = '입장'
+        button.dataset.id = data._id;
+        button.addEventListener('click', addBtnEvent);
+        td.appendChild(button);
+        tr.appendChild(td);
+        tr.dataset.id = data._id;
+        document.querySelector('table tbody').appendChild(tr);
+    });
+
+    socket.on('removeRoom', function(data){
+        document.querySelectorAll('tbody tr').forEach(function(tr){
+            if(tr.dataset.id == data){
+                tr.parentNode.removeChild(tr);
+            }
+        });
+    });
+
+    function addBtnEvent(e){
+        location.href = '/chat/' + window.location.href.slice(-1) + '/' + e.target.dataset.id;
+    }
+
+    document.querySelectorAll('.join-btn').forEach(function(btn){
+        btn.addEventListener('click', addBtnEvent);
+    });
+    var lastchats = document.getElementsByClassName("lastchat");
+    for(i=0; i<lastchats.length; i++){
+        if(lastchats[i].textContent.length>15 && lastchats[i].textContent != "아직 채팅이 없습니다. 첫 번째 채팅의 주인공이 되어보세요!"){
+            var chat = lastchats[i].textContent.substring(0,15);
+            chat = chat + " ...";
+            lastchats[i].textContent = chat;
+        }
+    }
+</script>
+<script>
+    window.onload = () => {
+        if (new URL(location.href).searchParams.get('error')){
+            alert(new URL(location.href).searchParams.get('error'));
+        }
+    };
+</script>
+<script>
+    $('.chat_maker').click(function(){
+        var $href = $(this).attr('href');
+        layer_popup3($href);
+    });
+
+    function layer_popup3(el){
+        var $el = $(el);    //레이어의 id를 $el 변수에 저장
+        var isDim = $el.prev().hasClass('dimBg'); //dimmed 레이어를 감지하기 위한 boolean 변수
+
+        isDim ? $('.dim-layer3').fadeIn() : $el.fadeIn();
+
+        var $elWidth = ~~($el.outerWidth()),
+            $elHeight = ~~($el.outerHeight()),
+            docWidth = $(document).width(),
+            docHeight = $(document).height();
+
+        // 화면의 중앙에 레이어를 띄운다.
+        if ($elHeight < docHeight || $elWidth < docWidth) {
+            $el.css({
+                marginTop: -$elHeight /2,
+                marginLeft: -$elWidth/2
+            })
+        } else {
+            $el.css({top: 500, left: -500});
+        }
+
+        $el.find('a.btn-close').click(function(){
+            isDim ? $('.dim-layer3').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
+            return false;
+        });
+    }
+</script>
+{% endblock %}

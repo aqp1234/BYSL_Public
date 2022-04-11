@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block title %}StudentBook - Main{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="/css/studentbook.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+
+    <div id="main_top">
+        <span class="text_deco01">학생부 활동 기록</span>
+        <a href="/solo/studentbook/{{solo_workspace.id}}/add" class="text_deco02">+</a>
+    </div>
+    <hr width = "100%" color="#414141" size = "3">
+    <table id="table_top">
+        <tr>
+            <td class="text_deco03">NO</td>
+            <td class="text_deco04">제목</td>
+            <td class="text_deco05">작성자</td>
+            <td class="text_deco06">DATE</td>
+        </tr>
+    </table>
+    <hr width = "100%" color="#414141" size = "2">
+    <table id="table_body">
+        <tbody>
+        {% for studentbook in studentbooks %}
+          <tr>
+            <td class="text_deco07">{{loop.index}}</td>
+            <td class="text_deco08"><a href="/solo/studentbook/{{solo_workspace.id}}/{{studentbook._id}}">{{studentbook.subject}}</a></td>
+            <td class="text_deco09">{{studentbook.user_name}}</td>
+            <td class="text_deco10">{{studentbook.createdAt}}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
+<script>
+    const dates = document.getElementsByClassName("text_deco10");
+    for(i = 0; i < dates.length; i++){
+        dates[i].textContent = moment(dates[i].textContent).format('LL');
+    }
+</script>
+{% endblock %}

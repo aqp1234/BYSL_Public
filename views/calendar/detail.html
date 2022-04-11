@@ -1,0 +1,23 @@
+<!-- 아마 안쓰는 html -->
+{% extends 'layout.html' %}
+
+{% block title %}Detail Calendar{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="/css/detail_calendar.css">
+{% endblock %}
+
+{% block content %}
+<div>
+    <span class="user">작성자</span>
+    <div>{{ calendar.user_name }}</div>
+    <span class="title">제목</span>
+    <div>{{ calendar.subject }}</div>
+    <span class="content">내용</span>
+    <div>{{ calendar.content }}</div>
+    <span class="content">시작날짜</span>
+    <div>{{ calendar.start_date }}</div>
+    <span class="content">끝날짜</span>
+    <div>{{ calendar.end_date }}</div>
+</div>
+{% endblock %}

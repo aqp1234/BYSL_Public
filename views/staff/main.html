@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block title %}Staff{% endblock %}
+
+{% block content %}
+{% for staffinvite in staffinvites %}
+<div>
+    <a href="{{staffinvite.url}}">{{staffinvite.user_name}}님의 {{staffinvite.type}}</a>
+</div>
+{% endfor %}
+{% endblock %}

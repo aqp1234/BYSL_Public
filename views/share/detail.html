@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block title %}Share - Detail{% endblock %}
+
+{% block content %}
+<!-- 업로드 내용 조회 화면 -->
+    <link rel="stylesheet" type="text/css" href="/css/share.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+<!-- 민석 -->
+<a href='/share/{{user_workspace.workspace_id}}' id='exit-btn'>◀</a>
+<span class="text_deco13"><a href='/share/{{user_workspace.workspace_id}}/change/{{share._id}}' class="text_deco14">글 수정</a></span>
+<span class="text_deco13"><a href='/share/{{user_workspace.workspace_id}}/delete/{{share._id}}' class="text_deco14">글 삭제</a></span>
+
+<div id="detail_top">
+    <hr class="line_deco01" width = "100%" color="#414141">
+        <div class="detail_title">{{share.subject}}</div>
+    <hr class="line_deco01" width = "100%" color="#414141">
+</div>
+<!-- 글이 길어질 경우 스크롤 처리 해놓음 -->
+<div readonly id="detail_body">{{share.content}}</div>
+<hr class="line_deco01" width = "100%" color="#414141">
+<div class="detail_download">
+    <span class="text_deco11" id="text_deco11">파일 다운로드</span>
+    {% if share.file_name != null %}
+        {% for sharefile in share.file_name %}
+            {% if sharefile %}
+                <a class="text_deco12" href="/share/{{user_workspace.workspace_id}}/download/{{share._id}}/{{loop.index0}}">{{sharefile.name}}</a>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <span class="text_deco12">파일 없음</span>
+    {% endif %}
+</div>
+
+{% endblock %}
+    
+{% block script %}
+    <script>
+        const filecount = document.getElementsByClassName("text_deco12");
+        if(!filecount.length){
+            const span = document.createElement("span");
+            span.className = "text_deco12";
+            span.textContent = "파일 없음";
+            document.getElementById("text_deco11").appendChild(span);
+        }
+    </script>
+    <script>
+        const body = document.getElementById('detail_body');
+        body.innerHTML = body.innerText;
+    </script>
+{% endblock %}

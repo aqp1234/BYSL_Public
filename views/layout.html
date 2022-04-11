@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    </head>
+    <body>
+        <link rel="stylesheet" type="text/css" href="/css/layout.css">
+        <link rel="stylesheet" type="text/css" href="/css/side_bar.css">
+        <link rel="stylesheet" type="text/css" href="/css/client_side_bar.css">
+        <link rel="stylesheet" type="text/css" href="/css/layout_popup.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+        {% block style %}
+        {% endblock %}
+        <!-- 상단바 -->
+        <nav>
+            <div id="top">
+                <div style="margin-top: -7px"><a href='/'><img src="/img/logo3.png" alt="logo" id="logo"></a></div>
+                <div id="top_right">
+                    {% if user_workspace %}
+                        <div class="name">{{user_workspace.nick}}</div>
+                        <div class="user_color" style="background-color: {{user_workspace.color}}"></div>
+                        <div><a class="nav-link" href="#" onclick="openChangeProfile()">Change Profile</a></div>
+                        <div><a class="nav-link" href="/settings/{{user_workspace.workspace_id}}">Settings</a></div>
+                    {% elif solo_workspace %}
+                        <div class="name">{{user.name}}</div>
+                        <div class="user_color" style="background-color: rgb(215, 226, 249)"></div>
+                        <div><a class="nav-link" href="#" onclick="openSoloSettings()">Settings</a></div>
+                    {% else %}
+                        <span class="name">{{user.name}}</span>
+                        <div class="user_color" style="background-color: rgb(215, 226, 249)"></div>
+                    {% endif %}
+                    <!-- 팀 워크스페이스 내 상단바 -->
+                    {% if user and user.id %}
+                        <a class='nav-link' href='/auth/logout'>LOGOUT</a>
+                    {% else %}
+                        <a class='nav-link' href='/auth/login'>LOGIN</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        <!-- 클라이언트 사용 워크스페이스 사이드 바 -->
+        <nav id="left_side_bar">
+            <button id="show" onclick="show_or_hide_left_side_bar()">◀</button>
+            <span id="wrap">
+                <nav class="menu_wrap">
+                    <ul class="menu">
+                        {% for solo_workspace in solo_workspaces %}
+                        <li class="menu_list">
+                            <a href='/solo/workspace/{{solo_workspace.id}}' class="menu_text" style="color: white;">{{solo_workspace.solo_workspacename}}</a>
+                        </li>
+                        {% endfor %}
+                        {% for workspace in myworkspaces %}
+                        <li class="menu_list">
+                            <a href='/workspace/{{workspace.id}}' class="menu_text">{{workspace.workspacename}}</a>
+                        </li>
+                        {% endfor %}
+                        <li class="plus_menu">
+                            <a class='plus' href='#workspace-select-layer'>+</a>
+                            <!-- 여기부터 + 버튼 눌렀을때 팝업으로 보여주는 내용 -->
+                            <div class="dim-layer">
+                                <div class="dimBg"></div>
+                                <div id="workspace-select-layer" class="pop-layer">
+                                    <div class="pop-container">
+                                        <div class="pop-conts">
+                                            <div class="btn-c">
+                                                <a href="#" class="btn-close">Close</a>
+                                            </div>
+                                            <!--content //-->
+                                            <div class="btn-r">
+                                                생성하려는 프로젝트의 종류를 선택해주세요.
+                                            </div>
+
+                                            <div class="btn-r">
+                                                <a href="#" class="btn-Ok">Team</a>
+                                                <a href="#test" class="btn-No">Personal</a>
+                                            </div>
+                                            <div class="btn-r">
+                                            </div>
+                                            <!--// content-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dim-layer2">
+                                <div class="dimBg2"></div>
+                                <div id="test" class="pop-layer2">
+                                    <div class="pop-container2">
+                                        <div class="pop-conts">
+                                            <div class="btn-c">
+                                                <a href="#" class="btn-close">Close</a>
+                                            </div>
+                                            <div class="btn-r">
+                                                개인 워크스페이스 이름을 입력해주세요
+                                            </div>
+                                            <form id="join-form" action="/solo/workspace/add" method="post">
+                                                <span class="input-group">
+                                                    <input id="solo-workspace-name" type="text" name="solo_workspacename">
+                                                </span>
+                                                <button id="workspace-btn" type="submit" class="btn-add" style="margin-left: 10px;">개인 워크스페이스 생성</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 여기까지 + 버튼 눌렀을때 팝업으로 보여주는 내용 -->
+                        </li>
+                    </ul>
+                </nav>
+                <nav class="menu_wrap" style="background-color: rgb(250, 230, 237) ;">
+                    <ul class="menu">
+                        <li class="menu_list" style="font-family: 'Noto Sans KR', sans-serif; font-weight: bolder;">
+                            ☁ 공유 받은 파일 ☁
+                        </li>
+                        {% for staffinvite in staffinvites %}
+                        <li class="menu_list">
+                            <a href="{{ staffinvite.url }}" class="menu_text_share">{{ staffinvite.user_name }} : {{ staffinvite.type }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </span>
+        </nav>
+        {% if user_workspace %}
+        <!-- 팀 워크스페이스 메뉴바-->
+        <nav id="workspace_side_bar">
+            <nav class="menu_wrap">
+                <!-- 메뉴 html 파일 만들고 라우터 등록 할 것 -->
+                <ul class="menu">
+                    <li class="menu_list">
+                        <a href='/room/{{user_workspace.workspace_id}}' class="menu_text">Chat</a>
+                    </li>
+                    <li class="menu_list">
+                        <a href='/dashboard/{{user_workspace.workspace_id}}' class="menu_text">Schedule</a>
+                    </li>
+                    <ul>
+                        <li class="menu_list_schedule">
+                            <a href='/calendar/{{user_workspace.workspace_id}}' class="menu_text">Calendar</a>
+                        </li>
+                        <li class="menu_list_schedule">
+                            <a href='/dashboard/{{user_workspace.workspace_id}}' class="menu_text">Dashboard</a>
+                        </li>
+                    </ul>
+                    <li class="menu_list">
+                        <a href='/conference/{{user_workspace.workspace_id}}' class="menu_text">Conference</a>
+                    </li>
+                    <li class="menu_list">
+                        <a href='/share/{{user_workspace.workspace_id}}' class="menu_text">Share</a>
+                    </li>
+                    <li class="menu_list">
+                        <!-- <a href='/workspace/{{workspace.id}}/invite_url' class="menu_text">Invite</a> -->
+                        <a class='invite menu_text' href='#invite-workspace-layer'>Invite</a>
+                        <!-- 여기부터 [invite 메뉴] 눌렀을때 팝업으로 보여주는 내용 -->
+                        <div class="invite_dim-layer">
+                            <div class="invite_dimBg"></div>
+                            <div id="invite-workspace-layer" class="invite_pop-layer">
+                                <div class="invite_pop-container">
+                                    <div class="invite_pop-conts">
+                                        <div class="btn-c">
+                                            <a href="#" class="btn-close">Close ✖</a>
+                                        </div>
+                                        <!--content //-->
+                                        <div class="btn-r">
+                                            초대할 인원의 이메일을 입력해주세요.
+                                        </div>
+
+                                        <form id="join-form" action="/workspace/{{ user_workspace.workspace_id }}/send_invite_mail" method="post">
+                                            <span class="input-group">
+                                                <input id="email" type="email" name="email">
+                                            </span>
+                                            <button id="workspace-btn" type="submit" class="btn-send">초대 이메일 발송</button>
+                                        </form>
+                                        <!--// content-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </nav>
+        {% elif solo_workspace %}
+        <!-- 개인 워크스페이스 메뉴바-->
+        <nav id="workspace_side_bar">
+            <nav class="menu_wrap">
+                <!-- 메뉴 html 파일 만들고 라우터 등록 할 것 -->
+                <ul class="menu">
+                    <li class="menu_list">
+                        <a href='/solo/calendar/{{ solo_workspace.id }}' class="menu_text">Calendar</a>
+                    </li>
+                    <li class="menu_list">
+                        <a href='/solo/studentbook/{{ solo_workspace.id }}' class="menu_text" style="font-family: 'Noto Sans KR', sans-serif; font-weight: bold;">학생부 활동 기록</a>
+                    </li>
+                    <li class="menu_list">
+                        <a href='/school_record/{{ solo_workspace.id }}' class="menu_text" style="font-family: 'Noto Sans KR', sans-serif; font-weight: bold;">생활기록부 관리</a>
+                    </li>
+                    <li class="menu_list">
+                        <a href='/self_introduce/{{solo_workspace.id}}' class="menu_text" style="font-family: 'Noto Sans KR', sans-serif; font-weight: bold;">자기소개서 관리</a> 
+                    </li>
+                </ul>
+            </nav>
+        </nav>
+        {% endif %}
+        <section id="main" class="workspace_section">
+        {% block content %}
+        {% endblock %}
+        </section>
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+        <script>
+            history.replaceState({}, null, location.pathname); // 요거는 페이지 로딩 후에 url에 #이나 ? 있으면 없애주는 코드
+        </script>
+        {% block script %}
+        {% endblock %}
+        <script>
+            window.onload = () => {
+              if (new URL(location.href).searchParams.get('loginError')) {
+                alert(new URL(location.href).searchParams.get('loginError'));
+              }
+              if(location.pathname == '/'){
+                  document.getElementById('main').className = 'main';
+              }
+              if(!"{{solo_workspace}}" && !"{{user_workspace}}"){
+                  document.getElementById('main').className = 'main';
+              }
+            };
+        </script>
+        <script>
+            $('.plus').click(function(){
+                var $href = $(this).attr('href');
+                layer_popup($href);
+            });
+
+            $('.invite').click(function(){
+                var $href = $(this).attr('href');
+                invite_layer_popup($href);
+            });
+
+            function layer_popup(el){
+                var $el = $(el);    //레이어의 id를 $el 변수에 저장
+                var isDim = $el.prev().hasClass('dimBg'); //dimmed 레이어를 감지하기 위한 boolean 변수
+
+                isDim ? $('.dim-layer').fadeIn() : $el.fadeIn();
+
+                var $elWidth = ~~($el.outerWidth()),
+                    $elHeight = ~~($el.outerHeight()),
+                    docWidth = $(document).width(),
+                    docHeight = $(document).height();
+
+                // 화면의 중앙에 레이어를 띄운다.
+                if ($elHeight < docHeight || $elWidth < docWidth) {
+                    $el.css({
+                        marginTop: -$elHeight /2,
+                        marginLeft: -$elWidth/2
+                    })
+                } else {
+                    $el.css({top: 500, left: -500});
+                }
+
+                $el.find('a.btn-Ok').click(function(){
+                    location.href="/workspace"
+                });
+
+                $el.find('a.btn-No').click(function(){
+                    isDim ? $('.dim-layer').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
+                    var $href = $(this).attr('href');
+                    layer_popup2($href);
+                });
+
+                $el.find('a.btn-close').click(function(){
+                    isDim ? $('.dim-layer').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
+                    return false;
+                });
+
+                $('.layer .dimBg').click(function(){
+                    $('.dim-layer').fadeOut();
+                    return false;
+                });
+            }
+            function layer_popup2(el){
+                var $el = $(el);    //레이어의 id를 $el 변수에 저장
+                var isDim = $el.prev().hasClass('dimBg2'); //dimmed 레이어를 감지하기 위한 boolean 변수
+                console.log($el);
+
+                isDim ? $('.dim-layer2').fadeIn() : $el.fadeIn();
+
+                var $elWidth = ~~($el.outerWidth()),
+                    $elHeight = ~~($el.outerHeight()),
+                    docWidth = $(document).width(),
+                    docHeight = $(document).height();
+
+                // 화면의 중앙에 레이어를 띄운다.
+                if ($elHeight < docHeight || $elWidth < docWidth) {
+                    $el.css({
+                        marginTop: -$elHeight /2,
+                        marginLeft: -$elWidth/2
+                    })
+                } else {
+                    $el.css({top: 0, left: 0});
+                }
+
+                $el.find('a.btn-close').click(function(){
+                    isDim ? $('.dim-layer2').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
+                    return false;
+                });
+            }
+
+            function invite_layer_popup(el){
+                var $el = $(el);    //레이어의 id를 $el 변수에 저장
+                var isDim = $el.prev().hasClass('invite_dimBg'); //dimmed 레이어를 감지하기 위한 boolean 변수
+                console.log($el);
+
+                isDim ? $('.invite_dim-layer').fadeIn() : $el.fadeIn();
+
+                var $elWidth = ~~($el.outerWidth()),
+                    $elHeight = ~~($el.outerHeight()),
+                    docWidth = $(document).width(),
+                    docHeight = $(document).height();
+
+                // 화면의 중앙에 레이어를 띄운다.
+                if ($elHeight < docHeight || $elWidth < docWidth) {
+                    $el.css({
+                        marginTop: -$elHeight /2,
+                        marginLeft: -$elWidth/2
+                    })
+                } else {
+                    $el.css({top: 0, left: 0});
+                }
+
+                $el.find('a.btn-close').click(function(){
+                    isDim ? $('.invite_dim-layer').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
+                    return false;
+                });
+            }
+        </script>
+        <script>
+            const show_or_hide_left_side_bar = () => {
+                if(wrap.style.display=='none') {
+                    wrap.style.display='';show.innerText='◀';
+                    main.style.width = main.offsetWidth - 210 + 'px';
+                } else {
+                    wrap.style.display='none';show.innerText='▶';
+                    main.style.width = main.offsetWidth + 210 + 'px';
+                }
+            }
+        </script>
+        <script>
+            const openChangeProfile = () => {
+                window.name = "parentForm";
+                openWin = window.open('/profile/{{user_workspace.workspace_id}}', 'childForm', 'width=500, height=300, resizable=no, scrollbars=yes');
+            }
+            const openSoloSettings = () => {
+                window.name = "parentForm";
+                openWin = window.open(`/solo/workspace/{{solo_workspace.id}}/settings`, 'childForm', 'width=500, height=200, resizable=no, scrollbars=yes');
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,1075 @@
+{% extends 'layout.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="/css/solo_school_record.css">
+{% endblock %}
+
+{% block title %}{{solo_workspace.id}}의 생활기록부 관리{% endblock %}
+
+{% block content %}
+<div id="main_top">
+    <a class="board_entry" href="/school_record/{{solo_workspace.id}}/list">생활기록부 버전 관리</a>|
+    <a class="pdf_input" href="/school_record/{{solo_workspace.id}}/add" class="text_deco02">+</a>
+</div>
+<style>
+    #btntest{
+        background-color: white;
+        visibility: hidden;
+    }
+    .empty{
+        display: block;
+        text-align: center;
+        background-color:lavender;
+        color: lightslategray;
+        border: 0;
+        border-radius: 5px;
+        text-decoration: none;
+        padding: 250px;
+        font-size: 20px;
+        font-family: 'Noto Sans KR', sans-serif; 
+        font-weight: bolder;
+        margin-top: -3px;
+    }
+</style><!--이거 텍스트 아래로 안내려졍-->
+{% if latest.file_path[0].path == null %}
+    <div><a href="/school_record/{{solo_workspace.id}}/add" class="empty">새로운 생활기록부를 추가해주세요 ➕</a></div>
+{% else %}
+    <iframe src="/{{latest.file_path[0].path}}"></iframe> <!-- 실제 컨텐츠가 반환되는 곳 -->
+{% endif %}
+
+<!--내신평점계산기 부분-->
+<div style="display: flex; justify-content: flex-end;"><button onclick="myFunction(this)" class="cal_btn">내신평점기</button></div>
+
+
+
+
+<!--원본파일에서 헤드에 들어가는 부분-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-121197739-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-121197739-1');
+</script>
+<meta charset="utf-8">
+<meta http-equiv="imagetoolbar" content="no">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+<!-- <script>
+// 자바스크립트에서 사용하는 전역변수 선언
+    var g5_url       = "https://test.com";
+    var g5_bbs_url   = "https://test.com/bbs";
+    var g5_is_member = "";
+    var g5_is_admin  = "";
+    var g5_is_mobile = "";
+    var g5_bo_table  = "";
+    var g5_sca       = "";
+    var g5_editor    = "";
+    var g5_cookie_domain = ".test.com";
+</script> -->
+<script src="https://skoologic.com/js/jquery-1.12.4.min.js"></script>
+<script src="https://skoologic.com/js/jquery-migrate-1.4.1.min.js"></script>
+<script src="https://skoologic.com/js/jquery.menu.js?ver=202108071740"></script>
+
+
+<!--원본파일에서 바디에 들어가는 부분-->
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+
+<div class='wrapContainer' id='btntest' name='wrapContainer'>
+    <div class='container paddingTb5'>
+        <div class='paddingPidT10'>
+            <div class="row">
+                <!-- <div class="subBanner col-xs-12 ">
+                    <script>
+                    $(window).load(function(){
+                        $('.ebs-comm001-m1-wrap-1601959383 .ebs-comm001-m1-in').show();
+                        $('.ebs-comm001-m1-wrap-1601959383 .ebs-comm001-m1').slick({
+                            slidesToShow: 1,
+                            arrows: true,
+                            dots: false,
+                            autoplay: true,
+                            autoplaySpeed: 3000,
+                                    responsive: [
+                                {
+                                    breakpoint: 768,
+                                    settings: {
+                                        arrows: true,
+                                        fade: false,
+                                        cssEase: 'linear',
+                                        centerPadding: '0px',
+                                        slidesToShow: 1
+                                    }
+                                }
+                            ]
+                                });
+                    });
+                    </script> -->
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-12'>
+                    <div class="tab-bg tab-bg-red">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab1">
+                                <div class='wrapBlind'>
+                                    <div class="skoolBlind">
+                                        <a class='btnClose'>닫기</a>
+                                        <div class='subjectBody'>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!-- <link rel='stylesheet' type='text/css' href='/theme/eb4_comm_001/page/inc/style.css?ver=202111020915'> -->
+                                <form>
+                                    <div class="table-list-eb table-list-mask">
+                                        <div class='eyoom-form'>
+                                            <div class='wrapUserSelect'>
+                                                <div class='wrapFilter'>
+                                                    <label>유형 선택</label>
+                                                    <label class="toggle"><input class='graduationSelect' type="radio" name="graduationSelect" value='재학생' data-graduationSelect='재학생' checked><i></i>재학생</label>
+                                                    <label class="toggle"><input class='graduationSelect' type="radio" name="graduationSelect" value='졸업자' data-graduationSelect='졸업자'><i></i>졸업자</label>
+                                                    <label class="toggle"><input class='graduationSelect' type="radio" name="graduationSelect" value='조기졸업자' data-graduationSelect='조기졸업자'><i></i>조기졸업자</label>
+                                                    <label class="toggle"><input class='graduationSelect' type="radio" name="graduationSelect" value='조기졸업예정자' data-graduationSelect='조기졸업예정자'><i></i>조기졸업예정자</label>
+                                                </div>
+                                            </div>
+                                            <div class='table-responsive'>
+                                                <table class="table table-bordered" style="width: 100%; text-align: center;">
+                                                    <col width='100px'>
+                                                    <col width='80px'>
+                                                    <col width='100px'>
+                                                    <col>
+                                                    <col>
+                                                    <col>
+                                                    <col>
+                                                    <col>
+                                                        <tr style="background-color: #ececec; font-weight: bold; color: rgb(66, 65, 65);">
+                                                            <td rowspan='2'><p class='text-center'>학년</p></td>
+                                                            <td rowspan='2'><p class='text-center'>교과</p></td>
+                                                            <td rowspan='2'><p class='text-center'>교과목</p></td>
+                                                            <td colspan='2'><p class='text-center'>1학기</p></td>
+                                                            <td colspan='2'><p class='text-center'>2학기</p></td>
+                                                            <td rowspan='2'><p class='text-center'>추가/삭제</p></td>
+                                                        </tr>
+                                                        <tr style="background-color: #ececec; font-weight: bold; color: rgb(66, 65, 65);">
+                                                            <td><p class='text-center'>이수단위</p></td>
+                                                            <td><p class='text-center'>과목등급</p></td>
+                                                            <td><p class='text-center'>이수단위</p></td>
+                                                            <td><p class='text-center'>과목등급</p></td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade1' >
+                                                            <td class='firstTd1' rowspan='5' style="font-weight: bold; background-color: #e3f8ce;">
+                                                                <p class='text-center'>1학년
+                                                                    <div>
+                                                                        <label class='labelPercent'>
+                                                                        <input class='inputGradeRatio1' type='text' value='20'>
+                                                                        </label>%
+                                                                    </div>
+                                                                </p>
+                                                            </td>
+                                                            <td><p class='text-center'>국어</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                <input type="text">
+                                                                <div class="button"><input class='btnSubjectSearch' data-type='korean' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='1'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='korean' data-grade='1'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade1 trMathmatics'>
+                                                            <td><p class='text-center'>수학</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='mathematics' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='1'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='mathematics' data-grade='1'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade1'>
+                                                            <td><p class='text-center'>영어</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                <input type="text">
+                                                                <div class="button"><input class='btnSubjectSearch' data-type='english' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='1'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='english' data-grade='1'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade1 trSociety'>
+                                                            <td><p class='text-center'>사회</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                <input type="text">
+                                                                <div class="button"><input class='btnSubjectSearch' data-type='society' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='1'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='society' data-grade='1'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade1 trScience'>
+                                                            <td><p class='text-center'>과학</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                <input type="text">
+                                                                <div class="button"><input class='btnSubjectSearch' data-type='science' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='1'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='science' data-grade='1'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade2'>
+                                                            <td class='firstTd2' rowspan='5' style="font-weight: bold; background-color: #d6f8f8;">
+                                                                <p class='text-center'>2학년
+                                                                    <div>
+                                                                        <label class='labelPercent'>
+                                                                        <input class='inputGradeRatio2' type='text' value='40'>
+                                                                        </label>%
+                                                                    </div>
+                                                                </p>
+                                                            </td>
+                                                            <td><p class='text-center'>국어</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='korean' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='2'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='korean' data-grade='2'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade2 trMathmatics'>
+                                                            <td><p class='text-center'>수학</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='mathematics' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='2'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='mathematics' data-grade='2'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade2'>
+                                                            <td><p class='text-center'>영어</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='english' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='2'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='english' data-grade='2'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade2 trSociety'>
+                                                            <td><p class='text-center'>사회</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='society' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='2'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='society' data-grade='2'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade2 trScience'>
+                                                            <td><p class='text-center'>과학</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='science' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='2'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='science' data-grade='2'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade3'>
+                                                            <td class='firstTd3' rowspan='5' style="font-weight: bold; background-color: #fae4ef;">
+                                                                <p class='text-center'>3학년
+                                                                    <div>
+                                                                        <label class='labelPercent'>
+                                                                        <input class='inputGradeRatio3' type='text' value='40'>
+                                                                        </label>%
+                                                                    </div>
+                                                                </p>
+                                                            </td>
+                                                            <td><p class='text-center'>국어</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='korean' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='3'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='korean' data-grade='3'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade3 trMathmatics'>
+                                                            <td><p class='text-center'>수학</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='mathematics' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='3'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='mathematics' data-grade='3'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade3'>
+                                                            <td><p class='text-center'>영어</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='english' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='3'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='english' data-grade='3'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade3 trSociety'>
+                                                            <td><p class='text-center'>사회</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='society' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='3'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='society' data-grade='3'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class='trGrade trGrade3 trScience'>
+                                                            <td><p class='text-center'>과학</p></td>
+                                                            <td>
+                                                                <div class="input input-button">
+                                                                    <input type="text">
+                                                                    <div class="button"><input class='btnSubjectSearch' data-type='science' type="button" value="검색"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td><label><input class='s01Hour' type='text' data-grade='3'></label></td>
+                                                            <td><label><input class='s01Rating' type='text'></label></td>
+                                                            <td><label><input class='s02Hour' type='text'></label></td>
+                                                            <td><label><input class='s02Rating' type='text'></label></td>
+                                                            <td>
+                                                                <button type="button" class="btn-e btn-e-xs btn-e-orange btnAddRow" data-type='science' data-grade='3'>추가</button>
+                                                            </td>
+                                                        </tr>
+                                                </table>
+                                            </div>
+                                            <div class='debug'>
+                                            </div>
+                                        </div>
+                                        <p class='wrapTotalResult text-center'>
+                                            <button type="button" class="btn-e btn-e-xxlg btn-e-orange" id='btnGetResults'>성적 산출하기</button>
+                                            <a href='/page/?pid=records01' class="btn-e btn-e-xxlg btn-e-orange" style="text-decoration: none; " id='btnGetResultsRetry'>다시 입력</a>
+                                        </p>
+                                    </div>
+                                    <div class='wrapResults table-list-eb' id="gradeTableMap">
+                                        <span class='col-md-6' style="width: 49%;">
+                                            <p class='tit3'>성적 산출</p>
+                                            <table class='table table-bordered' id='gradeTable'>
+                                                <thead>
+                                                    <tr>
+                                                        <td>학년</td><td>등급</td>
+                                                    </tr>
+                                                </thead>
+                                                <tr>
+                                                    <td>1</td><td><span class="gradeAverage1">0</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td><td><span class="gradeAverage2">0</span></td>
+                                                </tr>
+                                                <tr class='trGrade3'>
+                                                        <td>3</td><td><span class="gradeAverage3">0</span></td>
+                                                </tr>
+                                            </table>
+                                        </span>
+                                        <span class='col-md-6' style="width: 49%;">
+                                            <p class='tit3'>합산등급 성적 산출</p>
+                                            <table class='table table-bordered' id="totalGradeTable">
+                                                <col width='50%'>
+                                                <col width='50%'>
+                                                <thead>
+                                                    <tr>
+                                                        <td>학년(반영비율)</td><td>등급</td>
+                                                    </tr>
+                                                </thead>
+                                                <tr class='trGrade12'>
+                                                    <td>1,2</td>
+                                                    <td><span class='sumGradeAverage12Ratio'></span></td>
+                                                </tr>
+                                                <tr class='trGrade123'>
+                                                    <td>1,2,3</td>
+                                                    <td><span class='sumGradeAverage123Ratio'></span></td>
+                                                </tr>
+                                            </table>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- <div>
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                            <p>※ 등급별 비율</p>
+                                            <div class='table-responsive'>
+                                                <table class="table table-bordered" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>1등급</th>
+                                                        <th>2등급</th>
+                                                        <th>3등급</th>
+                                                        <th>4등급</th>
+                                                        <th>5등급</th>
+                                                        <th>6등급</th>
+                                                        <th>7등급</th>
+                                                        <th>8등급</th>
+                                                        <th>9등급</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row"><p class='text-center'>등급별<br>비율</p></th>
+                                                        <td>4%</td>
+                                                        <td>7%</td>
+                                                        <td>12%</td>
+                                                        <td>17%</td>
+                                                        <td>20%</td>
+                                                        <td>17%</td>
+                                                        <td>12%</td>
+                                                        <td>7%</td>
+                                                        <td>4%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row"><p class='text-center'>누적<br>비율</p></th>
+                                                        <td> 4%</td>
+                                                        <td>~11%</td>
+                                                        <td>~23%</td>
+                                                        <td>~40%</td>
+                                                        <td>~60%</td>
+                                                        <td>~77%</td>
+                                                        <td>~89%</td>
+                                                        <td>~96%</td>
+                                                        <td>~100%</td>
+                                                    </tr>
+                                                </tbody>
+                                                </table>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div> -->
+                                </form>
+                                <script>
+                                    var gradeSelect='';
+                                    var graduationSelect='';
+                                    var gySelect='';
+
+                                    var getThis='';
+                                    var selectedSubject='';
+                                    var dataType='';
+                                    var dataGrade='';
+
+                                    var subjectList='';
+                                    var htmlSubjectList='';
+                                    var lastGrade=0;
+                                    var resultGrade=0;
+                                    var resultPoint=0;
+                                    var subject1depth='';
+
+                                    var s01Hour=0;
+                                    var s01Rating=0;
+                                    var s02Hour=0;
+                                    var s02Rating=0;
+
+                                    var rowSumHead=0;
+                                    var rowSumTail=0;
+                                    var rowGradeAverage=0;
+
+                                    var gradeAverage=0;
+
+                                    var rowSumHead1=0;
+                                    var rowSumTail1=0;
+                                    var rowSumHead2=0;
+                                    var rowSumTail2=0;
+                                    var rowSumHead3=0;
+                                    var rowSumTail3=0;
+
+                                    var gradeAverage1=0;
+                                    var gradeAverage2=0;
+                                    var gradeAverage3=0;
+
+                                    var gradeAverage1Ratio=0;
+                                    var gradeAverage2Ratio=0;
+                                    var gradeAverage3Ratio=0;
+
+                                    var ratio1=0;
+                                    var ratio2=0;
+                                    var ratio3=0;
+
+                                    var spanGradeRatio1=0;
+                                    var spanGradeRatio2=0;
+                                    var spanGradeRatio3=0
+
+                                    var sumGradeAverage12Ratio=0;
+                                    var sumGradeAverage123Ratio=0;
+
+                                    /*
+                                    var inputGradeAverage1Ratio=0;
+                                    var inputGradeAverage2Ratio=0;
+                                    var inputGradeAverage3Ratio=0;
+                                    */
+
+                                    var trIndex='';
+                                    var htmlTr='';
+                                    var rowspan='';
+                                    var tempTable='';
+
+                                    /* 초기화 */
+                                    $('.trGrade12').css('display', 'none');
+
+                                    init(20,40,40);
+
+
+
+
+                                    $(document).on('click', '.gySelect', function(){
+                                        gySelect=$('input[name="gySelect"]:checked').val();
+                                        var trLeng;
+                                        /*
+                                        if(gySelect=='인문계열'){
+                                            $('.trMathmatics').css('display', '');
+                                            $('.trSociety').css('display', '');
+                                            $('.trScience').css('display', 'none');
+                                            trLeng=$('.trGrade1').length;
+                                        }else if(gySelect=='자연계열'){
+                                            alert(2);
+                                        }else if(gySelect=='예체능계열'){
+                                            alert(3);
+                                        };
+                                        */
+                                    });
+
+                                    $(document).on('click', '.btnSubjectSearch', function(e){
+                                        getThis=this;
+                                        dataType=$(this).attr('data-type');
+                                        if(dataType=='korean'){
+                                            subjectList=['국전','고전강해','고전문학 감상','고전문학의 감상과 비평','고전쓰기','교양독서와 논술','국어','국어1','국어1.2','국어생활','국어의 이해','국어의 이해1','국어의 이해2','글쓰기','논술','독서','독서1','독서논술','독서생활','독서와 문법','독서와 문법Ⅰ','독서와 문법Ⅱ','독서와 삶','독서와 의사소통','독서와 의사소통1','독서와 의사소통2','매체언어','매체언어의 이해와 감상','문법','문예창작','문학','문학1','문학2','문학개론','문학여행','문학감상','문학의 이해','생활국어','언어논술','언어탐구','작문','통합국어Ⅰ','통합국어Ⅱ','한국현대문학','화법','화법과 작문','화법과 작문Ⅰ','화법과 작문Ⅱ','현대문학','현대문학 감상','현대문학의 감상과 비평'];
+                                        }else if(dataType=='english'){
+                                            subjectList=['Advanced English','고급영어','고급영어1','고급영어2','고급영어작문','고급영어청해','고급영어회화','고급영어회화1','고급영어회화2','고등영어','공업영어','공통영어','관광영어','기초영어','무역영어','상업영어','생활영어','시사영어','실무영어','실용영어','실용영어Ⅰ','실용영어Ⅱ','실용영어독해와 작문','실용영어회화','실전영어','심화영어','심화영어독해Ⅰ','심화영어독해Ⅱ','심화영어독해와 작문','심화영어작문','심화영어회화','심화영어회화Ⅰ','심화영어회화Ⅱ','영문독해','영미문화','영미문화1','영미문화2','영어','영어1','영어2','영어1·2','영어1-b','영어10-A','영어10-B','영어강독','영어고급독해','영어권문화','영어권문화Ⅰ','영어권문화Ⅱ','영어기본Ⅰ','영어기본Ⅱ','영어독해','영어독해1','영어독해2','영어독해와 작문','영어듣기','영어문법','영어문법1','영어문법2','영어문학','영어문화','영어심화회화','영어심화회화1','영어심화회화2','영어의 기본Ⅰ','영어의 기본Ⅱ','영어작문','영어작문1','영어작문2','영어청력','영어청해','영어회화','영어회화1','영어회화2','영작문','원어민영어회화','인터넷영어','해사영어','환경영어'];
+                                        }else if(dataType=='mathematics'){
+                                            subjectList=['고급미적분학','고급수학','고급수학Ⅰ','고급수학Ⅱ','고급수학기본','고급수학의 기본','공업수학','공통수학','기본수학','기초미적분학','기초수학','기하','기하와 벡터','기하와 벡터심화','기하학과 삼각함수','미분과 적분','미분적분학1','미분적분학2','미분방정식','미적분','미적분Ⅰ','미적분Ⅱ','미적분과 통계기본','미적분과 통계기본심화','미적분과 통계심화','미적분학','미적분학Ⅰ','미적분학Ⅱ','미적분학Ⅲ','선형대수','선형대수학','선형대수학1','수리탐구Ⅰ','수리탐구Ⅱ','수학','수학1','수학1-가','수학1-나','수학Ⅰ-A','수학Ⅰ-B','수학Ⅰ심화','수학1·2','수학2','수학2-가','수학2-나','수학Ⅱ-A','수학Ⅱ-B','수학Ⅱ심화','수학3','수학10-가','수학10-나','수학과 사고','수학연습Ⅰ','수학연습Ⅱ','수학의 기본Ⅰ','수학의 기본Ⅱ','수학의 활용','수학재량','실업수학','실업수학1','실업수학2','실용수학','심화수학','심화수학Ⅰ','심화수학Ⅱ','생활수학','수리탐구','응용수학','이산수학','인문수학','인문통합수학','일반수학','자연수학','자연통합수학','적분과 통계','정수론','향상수학','해석','확률과 통계'];
+                                        }else if(dataType=='society'){
+                                            subjectList=['경영대요','경영일반','경영학의 이해','경제','경제생활','경제지리','공통사회','과제연구','관광지리','국민윤리','국사','국제경영','국제경제','국제경제1','국제경제2','국제관계','국제관계와 국제기구','국제관계의 이해','국제문제','국제법','국제외교','국제정치','국제정치Ⅰ','국제정치경제','국토지리','글로벌경제의 이해','기업경영','농업경영','도덕','동아시아근·현대사','동아시아사','문화경제지리','법과사회','법과정치','비교문화','비교문화Ⅰ','비교문화Ⅱ','사회','사회1','사회2','사회과학논술','사회문화','사회·문화','사회문화연구','사회과학방법론','사회-국사','사회철학','사회탐구','삶과 철학','상업경제','생활경제','생활과 교육','생활과 논리','생활과 심리','생활과 종교','생활과 윤리','생활과 헌법','생활철학','세계문제','세계사','세계역사의 이해','세계이해','세계지리','시민윤리','역사','예절','윤리','윤리와 사상','인간과 사회환경','인간과 환경','인간사회와 환경','인류의 미래사회','인문지리','인터넷 윤리','일반사회','전통윤리','정보와 사회','정치','정치경제','정치경제학','종교와 사회','지리','지리1','지리2','지역사회의 이해','지역과 사회','지역과 역사','지역이해','직업윤리','철학','통합사회1','한국경제의 이해','한국근현대사','한국문화사','한국사','한국사1','한국사2','한국의 사회와 문화','한국의 전통문화','한국의 현대사회','현대사회와 철학','현대생활과 윤리','한국지리','행동예절'];
+                                        }else if(dataType=='science'){
+                                            subjectList=['고급물리','고급생명과학','고급생물','고급지구과학','고급화학','공업화학','공통과학','과제연구','과학','과학1','과학2','과학3','과학4','과학교양','과학사','과학사 및 과학철학','과학실험','과학융합','과학적사고 및 실험','과학철학','기초물리학','기초물리학1','기초물리학2','기초물리학실험','기초물리학실험1','기초물리학실험2','기초생물학','기초생물학1','기초생물학2','기초생물학실험1','기초생물학실험2','기초지구과학','기초지구과학1','기초지구과학2','기초지구과학실험1','기초지구과학실험2','기초화학','기초화학1','기초화학2','기초화학실험1','기초화학실험2','대기과학','무기공업화학','물리','물리학B','물리1','물리2','물리1·2','물리실험','물리실험1','물리실험2','물리탐구','물리탐구1','물리탐구2','물리학 및 실험1','물리학 및 실험2','물리 및 실험','분석화학','분자생물학','생명공학의 이해','생명과학','생명과학Ⅰ','생명과학Ⅰ의 이해','생명과학Ⅱ','생명과학실험','생명과학실험1','생명과학실험2','생명과학 및 실험1','생명과학 및 실험2','생물','생물1','생물2','생물1·2','생물공학','생물공학기초','생물공학실습','생물공학실험','생물과학Ⅱ','생물과학실습Ⅰ','생물과학실습Ⅱ','생물 및 실험','생물실험','생물탐구','생물탐구1','생물탐구2','생물학 및 실험','생물학 및 실험1','생물학 및 실험2','생물학의 시대','생태각론Ⅰ','생태각론Ⅱ','생태와 환경','생태입문','생태학습','생태환경','생활과학','생활과 과학','세포생물학','식품과학','식품미생물','심화물리','심화생명과학','심화지구과학','심화화학','양자역학','역학','유기공업화학','유기화학','유전학','일반물리1','일반물리학','일반물리학1','일반물리학2','일반물리학실험','일반물리학실험1','일반물리학실험2','일반생명과학','일반생명과학1','일반생명과학2','일반생명과학실험','일반생명과학실험1','일반생명과학실험2','일반생물학','일반생물학1','일반생물학2','일반생물학실험','일반생물학실험1','일반생물학실험2','일반지구과학','일반지구과학1','일반지구과학2','일반지구과학실험1','일반지구과학실험2','일반화학','일반화학1','일반화학2','일반화학실험','일반화학실험1','일반화학실험2','자연친화','전산','전산일반','전자과학','전통과학의 이해','정보','정보과학','정보과학Ⅰ','정보과학Ⅱ','정보사회와 컴퓨터','정보·컴퓨터','정보와 컴퓨터','제조화학','지구','지구과학','지구과학1','지구과학2','지구과학실험','지구과학실험1','지구과학실험2','지구의 역사','지학1','지학2','천문학','컴퓨터','컴퓨터과학','컴퓨터과학1','컴퓨터과학2','컴퓨터일반','해양과학','현대과학과 기술','현대물리','현대물리 및 실험','화학','화학1','화학2','화학1·2','화학공학','화학공학1','화학공학2','화학실험','화학탐구','화학탐구1','화학탐구2','환경과학','환경화학'];
+                                        };
+                                        htmlSubjectList="<ul class='ulSubject subjectKorean'>";
+                                        for(var i=0;i<subjectList.length;i++){
+                                            htmlSubjectList+="<li><a class='btnSubjectSelect'>"+subjectList[i]+"</a></li>";
+                                        };
+                                        htmlSubjectList+="</ul>";
+                                        $('.subjectBody').html(htmlSubjectList);
+                                        $('.wrapBlind').show();
+                                    });
+                                    $(document).on('click', '.btnSubjectSelect', function(){
+                                        selectedSubject=$(this).text();
+                                        $(getThis).parent().prev().val(selectedSubject);
+                                        $('.wrapBlind').hide();
+                                    });
+                                    $(document).on('click', '.btnClose', function(e){
+                                        $('.wrapBlind').css('display', 'none');
+                                    });
+                                    $(document).on('click', '#btnGetResults', function(e){
+                                        len=$('.s01Hour').length;
+                                        //[0] 초기화-1
+                                        s01Hour=0;
+                                        s01Rating=0;
+                                        s02Hour=0;
+                                        s02Rating=0;
+                                        dataGrade=0;
+                                        //[0] 초기화-2
+                                        rowSumHead=0;
+                                        rowSumTail=0;
+                                        rowGradeAverage=0;
+                                        rowSumHead1=0;
+                                        rowSumTail1=0;
+                                        rowSumHead2=0;
+                                        rowSumTail2=0;
+                                        rowSumHead3=0;
+                                        rowSumTail3=0;
+                                        gradeAverage1=0;
+                                        gradeAverage2=0;
+                                        gradeAverage3=0;
+                                        //반영비율 가져오기
+                                        spanGradeRatio1=parseFloat($('.inputGradeRatio1').val());
+                                        spanGradeRatio2=parseFloat($('.inputGradeRatio2').val());
+                                        spanGradeRatio3=parseFloat($('.inputGradeRatio3').val());
+
+                                        init(spanGradeRatio1,spanGradeRatio2,spanGradeRatio3);
+
+                                        ratio1=parseFloat($('.inputGradeRatio1').val()*0.01);
+                                        ratio2=parseFloat($('.inputGradeRatio2').val()*0.01);
+                                        ratio3=parseFloat($('.inputGradeRatio3').val()*0.01);
+
+                                        table="<table class='table'>";
+                                        table+="<tr><td>학년</td><td>이수단위</td><td>과목등급</td><td>이수시간</td><td>과목등급</td><td>1학기(이수시간x과목등급)</td><td>2학기(이수시간x과목등급)</td><td>합계(1학기+2학기)</td><td>과목등급합</td><td>누적등급</td></tr>";
+                                        for(var i=0;i<len;i++){
+                                            //[0] 초기화하기
+                                            s01Hour=0;
+                                            s01Rating=0;
+                                            s02Hour=0;
+                                            s02Rating=0;
+                                            rowSumHead=0;
+                                            rowSumTail=0;
+                                            rowGradeAverage=0;
+                                            gradeAverage=0;
+                                            //[1]값 가져오기
+                                            dataGrade=parseFloat($('.btnAddRow').eq(i).attr('data-grade'));
+                                            s01Hour=parseFloat($('.s01Hour').eq(i).val());
+                                            s01Rating=parseFloat($('.s01Rating').eq(i).val());
+                                            s02Hour=parseFloat($('.s02Hour').eq(i).val());
+                                            s02Rating=parseFloat($('.s02Rating').eq(i).val());
+                                            //[2] 값이 없는경우
+
+                                            //둘다 있는 경우에만 저장한다
+                                            if($.isNumeric(s01Hour)&&$.isNumeric(s01Rating)){
+                                                s01Hour=s01Hour;
+                                                s01Rating=s01Rating;
+                                            }else{
+                                                s01Hour=0;
+                                                s01Rating=0;
+                                            };
+                                            if($.isNumeric(s02Hour)&&$.isNumeric(s02Rating)){
+                                                s02Hour=s02Hour;
+                                                s02Rating=s02Rating;
+                                            }else{
+                                                s02Hour=0;
+                                                s02Rating=0;
+                                            };
+
+                                            //[3] 연산1 - 이수단위와 과목등급이 모두 존재하는 경우에만 연산 그렇지 않은 경우에는 0
+                                            if(0<s01Hour&&0<s01Rating){	s01=parseFloat(s01Hour)*parseFloat(s01Rating); }else{ s01=0; };//1학기
+                                            if(0<s02Hour&&0<s02Rating){	s02=parseFloat(s02Hour)*parseFloat(s02Rating); }else{ s02=0; };//2학기
+
+                                            rowSumHead=s01+s02;
+                                            rowSumTail=s01Hour+s02Hour;
+                                            if(0<rowSumHead&&0<rowSumTail){
+                                                rowGradeAverage=rowSumHead/rowSumTail;
+                                            }else{
+                                                rowGradeAverage=0;
+                                            };
+                                            if(dataGrade==1){
+                                                rowSumHead1+=s01+s02;
+
+                                                rowSumTail1+=s01Hour+s02Hour;
+
+
+                                            }else if(dataGrade==2){
+                                                rowSumHead2+=s01+s02;
+                                                rowSumTail2+=s01Hour+s02Hour;
+                                            }else if(dataGrade==3){
+                                                rowSumHead3+=s01+s02;
+                                                rowSumTail3+=s01Hour+s02Hour;
+                                            };
+                                            //[4] 연산 2
+                                            table+="<tr>";
+                                            table+="<td>"+dataGrade+"</td><td>"+s01Hour+"</td><td>"+s01Rating+"</td><td>"+s02Hour+"</td><td>"+s02Rating+"</td><td>"+s01+"</td><td>"+s02+"</td><td>"+rowSumHead+"</td><td>"+rowSumTail+"</td><td>"+rowGradeAverage+"</td>";
+                                            table+="</tr>";
+                                        };
+                                        table+="</table>";
+
+                                        //$('.debug').html(table);
+                                        //[7] 출력
+                                        //[7-1] 숫자 검사 숫자인 경우 연산 아닌경우 0 대입
+                                        if(0<rowSumHead1&&0<rowSumTail1){
+                                            gradeAverage1=rowSumHead1/rowSumTail1;
+                                            gradeAverage1Ratio=gradeAverage1*ratio1;
+                                        }else{
+                                            gradeAverage1=0;
+                                            gradeAverage1Ratio=0;
+                                        };
+                                        if(0<rowSumHead2&&0<rowSumTail2){
+                                            gradeAverage2=rowSumHead2/rowSumTail2;
+                                            gradeAverage2Ratio=gradeAverage2*ratio2;
+                                        }else{
+                                            gradeAverage2=0;
+                                            gradeAverage2Ratio=0;
+                                        };
+                                        if(0<rowSumHead3&&0<rowSumTail3){
+                                            gradeAverage3=rowSumHead3/rowSumTail3;
+                                            gradeAverage3Ratio=gradeAverage3*ratio3;
+                                        }else{
+                                            gradeAverage3=0;
+                                            gradeAverage3Ratio=0;
+                                        };
+
+                                        sumGradeAverage12Ratio=gradeAverage1Ratio+gradeAverage2Ratio;
+                                        sumGradeAverage123Ratio=gradeAverage1Ratio+gradeAverage2Ratio+gradeAverage3Ratio;
+
+                                        graduationSelect=$('input[name="graduationSelect"]:checked').val();
+                                        console.log(graduationSelect);
+                                        if(graduationSelect=='졸업자'){
+                                            if(gradeAverage1Ratio==0||gradeAverage2Ratio==0||gradeAverage3Ratio==0){
+                                                //alert('정확하게 입력 후 이용해 주세요');
+                                                output(false);
+                                                return false;
+                                            };
+                                            output(true);
+                                        }else if(graduationSelect=='재학생'){
+                                            if(gradeAverage1Ratio==0||gradeAverage2Ratio==0||gradeAverage3Ratio==0){
+                                                //alert('정확하게 입력 후 이용해 주세요');
+                                                output(false);
+                                                return false;
+                                            };
+                                            output(true);
+                                        }else if(graduationSelect=='조기졸업자'){
+                                            if(gradeAverage1Ratio==0||gradeAverage2Ratio==0){
+                                                //alert('정확하게 입력 후 이용해 주세요');
+                                                output(false);
+                                                return false;
+                                            };
+                                            output(true);
+                                        }else if(graduationSelect=='조기졸업예정자'){
+                                            if(gradeAverage1Ratio==0||gradeAverage2Ratio==0){
+                                                //alert('정확하게 입력 후 이용해 주세요');
+                                                output(false);
+                                                return false;
+                                            };
+                                            output(true);
+                                        };
+
+                                        function output(val){
+                                            if(val==false){
+                                                //gradeAverage1=0;
+                                                //gradeAverage2=0;
+                                                //gradeAverage3=0;
+                                                //gradeAverage1Ratio='';
+                                                //gradeAverage2Ratio='';
+                                                //gradeAverage3Ratio='';
+                                                //sumGradeAverage12Ratio=0;
+                                                //sumGradeAverage123Ratio=0;
+                                            };
+
+                                            var msg='성적 산출 ';
+                                            var countNum=3;
+                                            if(!countNum){
+                                                countNum=3;
+                                            };
+                                            var html='';
+                                                html+="<div class='wrapAdBlind'>";
+                                                html+="	<div class='adBlind'>";
+                                                html+="		<div class='wrapAdLoading'>";
+                                                html+="			<div class='adLoading'>";
+                                                html+="				<img src='/img/Loading.gif' width='100%' alt='loading' style='position: relative; display: block; margin: 0px auto;'>";
+                                                html+="				<div class='wrapMessage' style='text-align: center'>";
+                                                html+="					<span style='font-weight: bolder; font-family: 'Noto Sans KR', sans-serif;'>"+msg+" <span class='second'>"+countNum+"</span>초 남았습니다.</span>";
+                                                html+="				</div>";
+                                                html+="			</div>";
+                                                html+="		</div>";
+                                                html+="	</div>";
+                                                html+="</div>";
+                                                $('.table-list-mask').append(html);
+                                                $('.wrapAdBlind').show();
+                                                var playAlert = setInterval(function(){
+                                                    countNum=countNum-1;
+                                                    $('.second').html(countNum);
+                                                    if(countNum==0){
+                                                        clearInterval(playAlert);
+                                                        $('.wrapAdBlind').hide();
+                                                        $('.wrapAdBlind').remove();
+                                                        $('.gradeAverage1').html(gradeAverage1.toFixed(1));
+                                                        $('.gradeAverage2').html(gradeAverage2.toFixed(1));
+                                                        $('.gradeAverage3').html(gradeAverage3.toFixed(1));
+                                                        $('.gradeAverage1Ratio').html(gradeAverage1Ratio);
+                                                        $('.gradeAverage2Ratio').html(gradeAverage2Ratio);
+                                                        $('.gradeAverage3Ratio').html(gradeAverage3Ratio);
+
+                                                        if(gradeAverage1&&gradeAverage2){
+                                                            $('.sumGradeAverage12Ratio').html(sumGradeAverage12Ratio.toFixed(1));
+                                                        }else{
+                                                            $('.sumGradeAverage12Ratio').html('');
+                                                        };
+                                                        if(gradeAverage1&&gradeAverage2&&gradeAverage3){
+                                                            $('.sumGradeAverage123Ratio').html(sumGradeAverage123Ratio.toFixed(1));
+                                                        }else{
+                                                            $('.sumGradeAverage123Ratio').html('');
+                                                        };
+                                                    };
+                                                }, 1000);
+                                        };
+                                    });
+                                    $(document).on('click', '.btnAddRow', function(e){
+                                        e.preventDefault();
+                                        /* start : 병합 행*/
+                                        graduationSelect=$('input[name="graduationSelect"]:checked').val();
+                                        dataGrade=$(this).attr('data-grade');
+                                        rowspan=parseInt($('.firstTd'+dataGrade).attr('rowspan'));
+                                        rowspan+=1;
+                                        $('.firstTd'+dataGrade).attr('rowspan', rowspan);
+                                        /* end : 병합 행*/
+                                        htmlTr='';
+                                        dataType=$(this).attr('data-type');
+                                        if(!dataType){
+                                            return false;
+                                        };
+                                        if(dataType=='korean'){
+                                            subject1depth='국어';
+                                        }else if(dataType=='english'){
+                                            subject1depth='영어';
+                                        }else if(dataType=='mathematics'){
+                                            subject1depth='수학';
+                                        }else if(dataType=='society'){
+                                            subject1depth='사회';
+                                        }else if(dataType=='science'){
+                                            subject1depth='과학';
+                                        };
+                                        htmlTr+="<tr>";
+                                        htmlTr+="<td><p class='text-center'>"+subject1depth+"</p></td>";
+                                        htmlTr+="<td>";
+                                        htmlTr+="	<div class='input input-button'>";
+                                        htmlTr+="		<input type='text'>";
+                                        htmlTr+="		<div class='button'><input class='btnSubjectSearch' data-type='"+dataType+"' type='button' value='검색'></div>";
+                                        htmlTr+="	</div>";
+                                        htmlTr+="</td>";
+                                        htmlTr+="<td><label><input class='s01Hour' type='text'></label></td>";
+                                        htmlTr+="<td><label><input class='s01Rating' type='text'></label></td>";
+
+
+                                        if(graduationSelect=='조기졸업예정자'&&dataGrade=='2'){
+                                            htmlTr+="<td><label><input class='s02Hour' type='text' disabled='disabled'></label></td>";
+                                            htmlTr+="<td><label><input class='s02Rating' type='text' disabled='disabled'></label></td>";
+                                        }else if(graduationSelect=='재학생'&&dataGrade=='3'){
+                                            htmlTr+="<td><label><input class='s02Hour' type='text' disabled='disabled'></label></td>";
+                                            htmlTr+="<td><label><input class='s02Rating' type='text' disabled='disabled'></label></td>";
+                                        }else{
+                                            htmlTr+="<td><label><input class='s02Hour' type='text'></label></td>";
+                                            htmlTr+="<td><label><input class='s02Rating' type='text'></label></td>";
+                                        };
+
+                                        htmlTr+="<td>";
+                                        htmlTr+="	<button type='button' class='btn-e btn-e-xs btn-e-orange btnAddRow' data-type='"+dataType+"'  data-grade="+dataGrade+">추가</button>";
+                                        htmlTr+="	<button type='button' class='btn-e btn-e-xs btn-e-dark btnDelRow' data-type='"+dataType+"' data-grade="+dataGrade+">삭제</button>";
+                                        htmlTr+="</td>";
+                                        htmlTr+="</tr>";
+                                        $(this).parent().parent().after(htmlTr);
+                                    });
+                                    $(document).on('click', '.btnDelRow', function(){
+                                        dataType=$(this).attr('data-type');
+                                        if(!dataType){
+                                            return false;
+                                        };
+                                        var koreanLength=$('input[data-type="'+dataType+'"]').length;
+                                        if(koreanLength==1){
+                                            return false;
+                                        };
+                                        /* 병합 행*/
+                                        dataGrade=$(this).attr('data-grade');
+                                        rowspan=parseInt($('.firstTd'+dataGrade).attr('rowspan'));
+                                        rowspan-=1;
+                                        $('.firstTd'+dataGrade).attr('rowspan', rowspan);
+                                        /* 병합 행*/
+                                        $(this).parent().parent().remove();
+                                    });
+
+                                    $(document).on('click', '.graduationSelect', function(){
+                                        graduationSelect=$(this).attr('data-graduationSelect');
+                                        if(graduationSelect=='졸업자'){
+                                            init(20, 40, 40);
+                                            $('.trGrade3').css('display', '');
+                                            $('.trGrade12').css('display', 'none');
+                                            $('.trGrade123').css('display', '');
+
+                                            $('.trGrade2').find('.s02Hour').attr('disabled', false);
+                                            $('.trGrade2').find('.s02Rating').attr('disabled', false);
+                                            $('.trGrade3').find('.s02Hour').attr('disabled', false);
+                                            $('.trGrade3').find('.s02Rating').attr('disabled', false);
+                                        }else if(graduationSelect=='재학생'){
+                                            init(20, 40, 40);
+                                            $('.trGrade3').css('display', '');
+                                            $('.trGrade12').css('display', 'none');
+                                            $('.trGrade123').css('display', '');
+                                            $('.trGrade3').find('.s02Hour').val('');
+                                            $('.trGrade3').find('.s02Rating').val('');
+                                            $('.trGrade2').find('.s02Hour').attr('disabled', false);
+                                            $('.trGrade2').find('.s02Rating').attr('disabled', false);
+                                            $('.trGrade3').find('.s02Hour').attr('disabled', true);
+                                            $('.trGrade3').find('.s02Rating').attr('disabled', true);
+
+                                        }else if(graduationSelect=='조기졸업자'){
+
+                                            init(50,50,0);
+                                            $('.trGrade3').css('display', 'none');
+                                            $('.trGrade12').css('display', '');
+                                            $('.trGrade123').css('display', 'none');
+
+                                            $('.trGrade2').find('.s02Hour').attr('disabled', false);
+                                            $('.trGrade2').find('.s02Rating').attr('disabled', false);
+
+                                        }else if(graduationSelect=='조기졸업예정자'){
+
+                                            init(50,50,0);
+                                            $('.trGrade3').css('display', 'none');
+
+                                            $('.trGrade12').css('display', '');
+                                            $('.trGrade123').css('display', 'none');
+
+                                            $('.trGrade2').find('.s02Hour').val('');
+                                            $('.trGrade2').find('.s02Rating').val('');
+
+                                            $('.trGrade2').find('.s02Hour').attr('disabled', true);
+                                            $('.trGrade2').find('.s02Rating').attr('disabled', true);
+                                        };
+                                    });
+
+                                    function init(g1,g2,g3){
+                                        $('.inputGradeRatio1').val(g1);
+                                        $('.inputGradeRatio2').val(g2);
+                                        $('.inputGradeRatio3').val(g3);
+
+                                        spanGradeRatio1=parseFloat(g1)*0.1;
+                                        spanGradeRatio2=parseFloat(g2)*0.1;
+                                        spanGradeRatio3=parseFloat(g3)*0.1;
+
+                                        ratio1=$('.inputGradeRatio1').val();
+                                        ratio2=$('.inputGradeRatio2').val();
+                                        ratio3=$('.inputGradeRatio3').val();
+
+                                    };
+
+                                </script> 
+
+
+                                <div class="tab-pane fade in" id="tab2">
+                                </div>
+
+
+                                <div class="tab-pane fade in" id="tab3">
+                                </div>
+
+                                <!-- <script>
+                                    $(document).ready(function() {
+                                        App.init();
+                                    });
+
+                                </script> -->
+
+                                <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121197739-1"></script>
+                                <script>
+                                    window.dataLayer = window.dataLayer || [];
+                                    function gtag(){dataLayer.push(arguments);}
+                                    gtag('js', new Date());
+
+                                    gtag('config', 'UA-121197739-1');
+                                </script>
+
+                                <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122568958-1"></script>
+                                <script>
+                                    window.dataLayer = window.dataLayer || [];
+                                    function gtag(){dataLayer.push(arguments);}
+                                    gtag('js', new Date());
+
+                                    gtag('config', 'UA-122568958-1');
+                                </script>
+                                <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+                                <script type="text/javascript">
+                                    if(!wcs_add) var wcs_add = {};
+                                    wcs_add["wa"] = "26a39518a559d6";
+                                    wcs_do();
+                                </script>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--주석으로 신세한탄하기.... visible 만 함수로 주면되니까 10분이면 완전 끝내겟다 생각한 코드,,,,... 알수없는 오류에 stackoverflow를 샅샅이 뒤졌고,... getElemets 라고 되어있는거 발견.........쥬륵-->
+<script>
+function myFunction(){
+    const btn = document.getElementById("btntest");
+
+    if(btn.style.visibility == 'visible'){
+        btn.style.visibility = 'hidden';
+    }else{
+        btn.style.visibility ='visible';
+    }
+}
+</script>
+
+
+{% endblock %}

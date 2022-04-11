@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Calendar</title>
+    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+    <link rel="stylesheet" href="/css/add_calendar.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <form id="join-form" action="/calendar/{{user_workspace.workspace_id}}/change/{{calendar._id}}" method="post">
+        <div class="input-group">
+            <div class="input-what">Subject</div> <!-- calendar 제목 입력 -->
+            <input id="subject" type="text" name="subject" value="{{calendar.subject}}"></div>
+        </div>
+        <div class="input-group">
+            <div class="input-what">Content</div> <!-- 세부내용 입력 -->
+            <input id="content" type="text" name="content" value="{{calendar.content}}"></div>
+        </div>
+        <div class="input-group">
+            <div class="input-what">Start Date</div> <!-- 시작 날짜 입력 -->
+            <input id="start_date" type="date" name="start_date"></div>
+        </div>
+        <div class="input-group">
+            <div class="input-what">End Date</div> <!-- 끝 날짜 입력 -->
+            <input id="end_date" type="date" name="end_date"></div>
+        </div>
+        <button id="calendar-btn" type="submit" class="btn">Change calendar</button>
+    </form>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
+<script>
+    var start_date_value = moment("{{calendar.start_date}}").format("YYYY-MM-DD");
+    var end_date_value = moment("{{calendar.end_date}}").format("YYYY-MM-DD");
+    start_date.value = start_date_value;
+    end_date.value = end_date_value;
+    start_date.max = end_date_value;
+    end_date.min = start_date_value;
+    start_date.addEventListener("change", (e) => {
+        end_date.min = e.target.value;
+    });
+    end_date.addEventListener("change", (e) => {
+        start_date.max = e.target.value;
+    });
+</script>
+</html>

@@ -1,0 +1,48 @@
+#show{
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    width: 30px;
+    height: 25px;
+    border: 0;
+    outline: 0;
+}
+
+.menu_wrap{
+    background-color: #bdd7ff;
+    width: 210px;
+    border-radius: 5px;
+}
+
+.menu_list{
+    list-style: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.menu_text{
+    font-size: 20px;
+    color: rgb(36, 36, 36);
+    font-family: 'Ubuntu', sans-serif;
+    text-decoration:none
+}
+
+.plus_menu{
+    list-style: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 15px;
+    text-align: right;
+}
+
+.plus{
+    font-size: 30px;
+    color: rgb(36, 36, 36);
+    font-family: 'Ubuntu', sans-serif;
+    text-decoration:none
+}
+
+#solo-workspace-name{
+    width: 150px;
+    height: 15px;
+    padding: 5px;
+}

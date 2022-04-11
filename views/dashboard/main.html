@@ -1,0 +1,87 @@
+{% extends 'layout.html' %}
+
+{% block title %}Dashboard - Main{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet"> <!-- 한국어 글꼴 -->
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet"> <!-- 영어 글꼴 -->
+
+    <div id="main_top">
+        <span class="text_deco01">DashBoard</span>
+        <a href="/dashboard/{{user_workspace.workspace_id}}/add" class="text_deco02">+</a>
+    </div>
+    <hr width = "100%" color="#414141" size = "3">
+    <table id="table_top">
+        <tr>
+            <td class="text_deco03">할 일</td>
+            <td class="text_deco04">진행 중</td>
+            <td class="text_deco05">완료</td>
+        </tr>
+    </table>
+    <hr width = "100%" color="#414141" size = "2">
+    <table id="table_body">
+        <tbody style="vertical-align: top;">
+          <tr style="padding: 5px;">
+            <td class="text_deco06"> <!-- 할 일 -->
+                {% for dashboard in dashboard_flag1 %}
+                    <div class="flag01" style="background-color: {{dashboard.manager_color}};">
+                        <div>
+                            <a href="/dashboard/{{user_workspace.workspace_id}}/detail/{{dashboard._id}}" class="flag_deco01">{{dashboard.subject}}</a>
+                            <span class="flag_deco07">시작일 :<span class="flag_deco06">{{dashboard.start_date}}</span></span>
+                        </div>
+                        <hr width = "99%" color="#616161" style="float: left; height: 0.3px;">
+                        <textarea readonly class="flag_deco04" data-content="{{dashboard.content}}"></textarea>
+                        <div class="flag_deco05">담당자 : {{dashboard.manager_name}}</div>
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="text_deco07"> <!-- 진행 중 -->
+                {% for dashboard in dashboard_flag2 %}
+                    <div class="flag02" style="background-color: {{dashboard.manager_color}};">
+                        <div>
+                            <a href="/dashboard/{{user_workspace.workspace_id}}/detail/{{dashboard._id}}" class="flag_deco02">{{dashboard.subject}}</a>
+                            <span class="flag_deco08">시작일 :<span class="flag_deco06">{{dashboard.start_date}}</span></span>
+                            <span class="flag_deco09">종료일 :<span class="flag_deco06">{{dashboard.end_date}}</span></span>
+                        </div>
+                        <hr width = "99%" color="#616161" style="float: left; height: 0.3px;">
+                        <textarea readonly class="flag_deco04" data-content="{{dashboard.content}}"></textarea>
+                        <div class="flag_deco05">담당자 : {{dashboard.manager_name}}</div>
+                    </div>
+                {% endfor %}
+            </td>
+            <td class="text_deco08"> <!-- 종료 -->
+                {% for dashboard in dashboard_flag3 %}
+                    <div class="flag03" style="background-color:rgb(241, 241, 241);">
+                        <div>
+                            <a href="/dashboard/{{user_workspace.workspace_id}}/detail/{{dashboard._id}}" class="flag_deco03">{{dashboard.subject}}</a>
+                            <span class="flag_deco07">종료일 :<span class="flag_deco06">{{dashboard.end_date}}</span></span>
+                        </div>
+                        <hr width = "99%" color="#616161" style="float: left; height: 0.3px;">
+                        <textarea readonly class="flag_deco04" data-content="{{dashboard.content}}"></textarea>
+                        <div class="flag_deco05">담당자 : {{dashboard.manager_name}}</div>
+                    </div>
+                {% endfor %}
+            </td>
+          </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
+    <script>
+        const dates = document.getElementsByClassName("flag_deco06");
+        for(i = 0; i < dates.length; i++){
+            dates[i].textContent = moment(dates[i].textContent).format('LL');
+        }
+    </script>
+    <script>
+        const contents = document.getElementsByClassName("flag_deco04");
+        for(i = 0; i < contents.length; i++){
+            contents[i].innerHTML = contents[i].getAttribute("data-content").replace(/<br>/ig, "\n").replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
+        }
+    </script>
+{% endblock %}

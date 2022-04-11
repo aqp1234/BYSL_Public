@@ -1,0 +1,109 @@
+{% extends 'layout.html' %}
+
+{% block title %}Chat{% endblock %}
+
+{% block content %}
+
+<!-- 채팅 화면 -->
+    <link rel="stylesheet" type="text/css" href="/css/chat.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+    <!-- 채팅방 나가는 아이콘 삽입 필  -->
+    <a href='/room/{{user_workspace.workspace_id}}' id='exit-btn'>◀</a>
+    <span class="chatroom_name">{{chatroom.roomname}}</span> <!-- 채팅방에서 방 이름 나오도록 설정 -->
+    <a href='#' id='delete-btn'>채팅방 삭제</a>
+    <fieldset>
+        <div id='chat-list'>
+            {% for chat in chats %}
+                {% if chat.user_id === user.id %}
+                    <div class='mine'>
+                        <div class='mine_nick'>{{chat.user_name}}</div>
+                        <div class='mine_chat'>{{chat.chat}}</div>
+                        <div class='mine_color' style="background-color: {{chat.user_color}};"></div>
+                    </div>
+                {% else %}
+                    <div class='other'>
+                        <div class='other_color' style="background-color: {{chat.user_color}};"></div>
+                        <div class='other_nick'>{{chat.user_name}}</div>
+                        <div class='other_chat'>{{chat.chat}}</div>
+                        <!-- <div>{{chat.file}}</div> -->
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </fieldset>
+    <form action='/chat' id='chat-form' method='post' enctype='multipart/form-data'>
+        <textarea type='text' id='chat' name='chat'></textarea>
+        <button type='submit' id='testbtn'>전송</button>
+    </form>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io.connect(window.location.origin + "/chat", { path: '/socket.io', });
+        socket.on('chat', function(data) {
+            const div = document.createElement('div'); // div 생성
+            if(data.user_id == "{{user.id}}"){ // 들어온 채팅의 유저가 현재 로그인한 유저와 동일한 경우
+                div.className = 'mine' // <div class="mine">으로 설정하는 부분
+            } else{
+                div.className = 'other'; // 요거는 <div class="other"> 다른 사람인걸 판단하기 위한 내용
+                const color = document.createElement('div');
+                color.classList.add(div.classList + "_color");
+                color.style.backgroundColor = data.user_color;
+                div.appendChild(color);
+            }
+            const name = document.createElement('div'); // 이름이 name 인 새로운 div 생성
+            name.textContent = data.user_name; // name div의 값은 채팅을 쓴 유저의 이름(닉네임)
+            name.classList.add(div.className + '_nick');
+            div.appendChild(name);
+            if(data.chat){ // 채팅 내용이 있으면 
+                const chat = document.createElement('div');
+                chat.textContent = data.chat;
+                chat.classList.add(div.className + '_chat');
+                div.appendChild(chat);
+            }
+            if(div.className == 'mine'){
+                const color = document.createElement('div');
+                color.classList.add(div.classList + "_color");
+                color.style.backgroundColor = data.user_color;
+                div.appendChild(color);
+            }
+            document.querySelector('#chat-list').appendChild(div);
+        });
+        document.querySelector('#chat-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(e.target.chat.value){
+                axios.post('./{{chatroom._id}}/chat', {
+                    chat: this.chat.value,
+                })
+                    .then(() => {
+                        e.target.chat.value = '';
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+            }
+        });
+    </script>
+    <script>
+        document.getElementById('delete-btn').addEventListener('click', () => {
+            if(confirm('정말로 삭제하시겠습니까?')){
+                fetch(location.pathname, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json'},
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    location.href = '/room/' + data.workspace_id;
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block script %}
+    
+{% endblock %}

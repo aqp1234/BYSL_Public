@@ -1,0 +1,118 @@
+{% extends 'layout.html' %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="/css/calendar.css">
+<link rel="stylesheet" href="/css/calendar_popup.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <a href='#' class="add" onclick="openAddPage()">일정 추가 ➕</a>
+    <div class="calendar-button">
+        <div class="nav">
+            <button id="calendar-prev-btn" class="nav-btn" onclick="goPrevCalendar()">&lt;</button>
+            <div class="this_day">
+                <div class="year-month"></div> <!-- (오늘 날짜를 담고 있는) 년/월 -->
+                <button id="calendar-now-btn" class="nav-btn" onclick="goTodayCalendar()">Today ✔</button>
+            </div>
+            <button id="calendar-next-btn" class="nav-btn" onclick="goNextCalendar()">&gt;</button>
+        </div>
+    </div>
+    <div class="calendar_dim-layer">
+        <div class="calendar_dimBg"></div>
+        <div id="calendar_layer" class="calendar_pop-layer">
+            <div class="calendar_pop-container">
+                <div class="calendar_pop-conts">
+                    <div class="btn-c">
+                        <a href="#" class="btn-close">Close ✖</a>
+                    </div>
+                    <!--content //-->
+                    <div class="calendar_info_text"><span style="margin-right: 8px;">☁  </span>{{workspace.workspacename}} 워크스페이스 일정  ☁</div>
+                    <table style="margin: 0;">
+                        <colgroup>
+                            <col style="width: max-content">
+                            <col style="width: max-content">
+                        </colgroup>
+                        <tbody class="calendar_tbody">
+                            <input type="hidden" value="" id="calendar_id">
+                            <tr>
+                                <th scope="row">제목</th>
+                                <td><p id="calendar_subject">제목</p></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">내용</th>
+                                <td><p id="calendar_content">내용</p></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">시작 날짜</th>
+                                <td><p id="calendar_start_date">시작 날짜</p></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">끝 날짜</th>
+                                <td><p id="calendar_end_date">끝 날짜</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--// content-->
+                    <div class="btn-updel" id="onlyowner" data-user_id="{{user.id}}">
+                        <span style="margin-right: 5px;"><a href="#" class="btn-update" onclick="openUpdatePage()">일정 수정</a></span>
+                        <span><a href="#" class="btn-delete" onclick="deleteCalendar()">일정 삭제</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="calendar">
+    </div>
+    <div id="detail" style="margin-top: 50px; display:none;">
+        <h3 id="detail_h3" style="text-align:center;">~~일의 일정</h3>
+        <div>
+            <div style="background-color: rgb(242, 242, 242); border-radius: 5px;">
+                <table order='1px solid black' id="detail_table">
+                    <colgroup>
+                        <col style="width: 20%">
+                        <col style="width: 60%">
+                        <col style="width: 20%">
+                    </colgroup>
+                    <thead>
+                        <tr id="table_title">
+                            <td>종류</td>
+                            <td>내용</td>
+                            <td>자세히보기</td>
+                        </tr>
+                    </thead>
+                    <tbody id="detail_tbody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="/javascript/calendar.js"></script>
+<script>
+    var openWin;
+
+    const openAddPage = () => {
+        window.name = 'parentForm';
+        openWin = window.open('/calendar/{{workspace.id}}/add', 'childForm', 'width=570, height=400, resizable=no, scrollbars=yes');
+    }
+    
+    const openUpdatePage = () => {
+        window.name = 'parentForm';
+        const calendar_id = document.getElementById('calendar_id').value;
+        openWin = window.open('/calendar/{{workspace.id}}/change/' + calendar_id, 'childForm', 'width=570, height=400, resizable=no, scrollbars=yes');
+    }
+
+    const deleteCalendar = async() => {
+        if(confirm('정말 삭제하시겠습니까?')){
+            const calendar_id = document.getElementById('calendar_id').value;
+            location.href = `${location.pathname}/delete/${calendar_id}`;
+        }
+    }
+</script>
+{% endblock %}

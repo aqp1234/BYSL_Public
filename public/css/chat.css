@@ -1,0 +1,129 @@
+/* fieldset 스크롤 */
+fieldset{overflow-y:scroll; height:400px;}
+fieldset::-webkit-scrollbar { width: 10px;}
+fieldset::-webkit-scrollbar-thumb{
+    height: 17%;
+    background-color: rgb(199, 199, 199);
+    border-radius: 10px;    
+}
+fieldset::-webkit-scrollbar-track{
+    background-color: rgba(255, 255, 255, 0);
+}
+
+/* textarea 스크롤 */
+textarea{overflow-y:scroll; height:400px;}
+textarea::-webkit-scrollbar { width: 10px;}
+textarea::-webkit-scrollbar-thumb{
+    height: 17%;
+    background-color: rgb(199, 199, 199);
+    border-radius: 10px;    
+}
+textarea::-webkit-scrollbar-track{
+    background-color: rgba(255, 255, 255, 0);
+}
+/* 뒤로가기 */
+#exit-btn{
+    font-size: 25px;
+    text-decoration: none;
+    color: #bdd7ff;
+}
+.chatroom_name{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 20px;
+    color: rgb(56, 56, 56);
+}
+#delete-btn{
+    font-family: 'Noto Sans KR', sans-serif;
+    text-decoration: none;
+    font-size: 15px;
+    float: right;
+    margin: 5px;
+    background-color: rgb(231, 231, 231);
+    padding: 2px 7px;
+    color: black;
+    border-radius: 5px;
+}
+/* 채팅 내용 입력 및 전송 버튼 */
+fieldset{
+    margin-top: 7px;
+    background-color: rgb(248, 248, 248);
+    height: 500px;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 5px;
+}
+#chat-form{
+    position: relative;
+    margin-top: 15px;
+    margin-left: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#chat{
+    resize: none;
+    font-size: 15px;
+    padding: 10px 10px 10px 10px;
+    width: 76%;
+    height: 80px;
+    margin-right: 5px;
+    border-radius: 4px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #bdbcbc;
+    word-break:break-all;
+}
+#testbtn{
+    width: 20%;
+    height: 105px;
+    margin-right: 2px;
+    border-radius: 4px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #bdbcbc;
+    background-color: rgb(236, 236, 236);
+    color: rgb(78, 78, 78);
+    font-weight: bolder;
+    -webkit-transition: none;
+    transition: none;
+    font-size: 15px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+#testbtn:hover {
+	background-color: #bdbcbc;
+    color: rgb(252, 248, 248);
+}
+#testbtn:active {
+	top: 3px;
+}
+
+
+
+/* (본인) 전송될 채팅 전체 */
+.mine{margin-top: 15px; display: flex; justify-content: flex-end; position: relative;}
+
+
+.mine_color{position: static; display: inline-block; width: 50px; height: 50px; border-radius: 50%;}
+
+/* 사용자 본인 닉네임 */
+.mine_nick{position: absolute; margin-top: -5px; height: fit-content; margin-right: 60px;
+           font-family: 'Noto Sans KR', sans-serif;}
+
+/* 사용자 본인 채팅 */
+.mine_chat{position: relative; display: inline-block; height:auto; max-width: 700px; word-break:break-all; margin-top: 20px; padding: 6px 10px;
+           margin-right: 10px; background-color: rgb(230, 230, 230); border-radius: 5px; font-family: 'Noto Sans KR', sans-serif;}
+
+
+/* (상대방) 전송될 채팅 전체 */
+.other{margin-top: 15px; display: flex; position: relative;}
+
+/* 채팅 내부 상대방 색상 */
+.other_color{position: static; display: inline-block; width: 50px; height: 50px; border-radius: 50%;}
+
+/* 사용자 상대방 닉네임 */
+.other_nick{position: absolute; margin-top: -5px; height: fit-content; margin-left: 60px;
+            font-family: 'Noto Sans KR', sans-serif;}
+
+/* 상대방 채팅 */
+.other_chat{position: relative; display: inline-block; margin-top: 20px; height:auto; max-width: 700px; word-break:break-all;
+            background-color: rgb(230, 230, 230); border-radius: 5px; margin-left: 10px; padding: 6px 10px; font-family: 'Noto Sans KR', sans-serif;}

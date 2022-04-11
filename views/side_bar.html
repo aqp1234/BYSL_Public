@@ -1,0 +1,23 @@
+<!-- 이것도 안쓰는 html 인가요??? 승원에게 -민석-  -->
+<!-- (승원) 아마도 그럴꺼임 근데 혹시 모르니까 남겨두고 나중에 한 번에 지우자 -->
+<!-- 상단 메뉴바 -->
+{% block content %}
+    {% if user %}
+    <link rel="stylesheet" type="text/css" href="/css/client_side_bar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/side_bar.css">
+    <nav>
+        <div id="top">
+            <span id="logo"><img src="/img/nct.png" alt="logo"></span>
+            {% if user.nick %}
+            <!-- 색상 값 받아오는 코드 필요 -->
+            <div class="user_color" style="background-color: rgb(215, 226, 249)"></div>
+            <span class="name">{{user.nick}}</span>
+            {% else %}
+            <div class="user_color" style="background-color: rgb(215, 226, 249)"></div>
+            <span class="name">{{user.name}}</span>
+            {% endif %}
+        </div>
+    </nav>
+    {% endif %}
+{% endblock %}

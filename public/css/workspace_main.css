@@ -1,0 +1,123 @@
+/* layout.css 로  합쳐서 이제 사용 X 일듯 */
+/* workspace 선택 시 전체적인 layout */
+#left_side_bar{
+    display: inline-block;
+    position: static;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+#workspace_side_bar{
+    display: inline-block;
+    position: absolute;
+    margin-top: 35px;
+    margin-right: 10px;
+}
+
+#workspace_section {
+    display: inline-block;
+    position: absolute;
+    margin-left: 220px;
+    margin-top: 10px;
+    width: 70%;
+}
+
+#main {
+    display: inline-block;
+    position: absolute;
+    margin-top: 10px;
+    width: 70%;
+}
+
+/* 상단바 */
+img{
+    width: 70px;
+    height: auto;
+}
+
+#logo{
+    position: relative;
+    top: 23px;
+    left: 20px;
+}
+
+#top{
+    background-color: rgb(231, 231, 231);
+    width: 100%;
+    height: 95px;
+    line-height: 95px;
+    height: 95px;
+}
+
+.name{
+    font-size: 15px;
+    color: rgb(66, 65, 65);
+    font-family: 'Ubuntu', sans-serif;
+    position: relative;
+    float: right;
+    right: 30px;
+}
+
+.user_color{
+    position: relative;
+    float: right;
+    top: 14px;
+    right: 15px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+.nav-link{
+    font-size: 10px;
+    color: rgb(66, 65, 65);
+    font-family: 'Ubuntu', sans-serif;
+    position: static;
+    float: right;
+    margin-right: 10px;
+}
+
+/* 좌측 사용자 워크스페이스 관련 */
+#show{
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    width: 30px;
+    height: 25px;
+    border: 0;
+    outline: 0;
+}
+.menu_wrap{
+    background-color: #bdd7ff;
+    width: 210px;
+    border-radius: 5px;
+}
+.menu_list{
+    list-style: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.menu_list_schedule{
+    list-style-type: "\2601\20\20";
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.menu_text{
+    font-size: 20px;
+    color: rgb(36, 36, 36);
+    font-family: 'Ubuntu', sans-serif;
+    text-decoration:none
+}
+.plus_menu{
+    list-style: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 15px;
+    text-align: right;
+}
+.plus{
+    font-size: 30px;
+    color: rgb(36, 36, 36);
+    font-family: 'Ubuntu', sans-serif;
+    text-decoration:none
+}
+

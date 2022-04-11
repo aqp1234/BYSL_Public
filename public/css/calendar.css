@@ -1,0 +1,167 @@
+.add{
+  color: rgb(51, 51, 51);
+  text-decoration: none;
+  font-size: 16px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bolder;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
+#calendar { /* 캘린더 전체 감싸는 id값 */
+    width: 100%;
+    height: 99%;
+    box-sizing: border-box;
+    padding: 0;
+    margin-bottom: 5px;
+  }
+
+  .year-month{ /* (오늘 날짜를 담고 있는) 년/월 */
+    font-size: 30px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bolder;
+    color: rgb(51, 51, 51);
+    position: center;
+    margin-right: 10px;
+  }
+
+  .nav{ /* <, (오늘 날짜를 담고 있는) 년/월, today, > 버튼 묶음 */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px 0px 15px 0px;
+  }
+
+  .this_day{ /* (오늘 날짜를 담고 있는) 년/월, Today 버튼 묶음 */
+    display: flex;
+    align-items: flex-end;
+  }
+
+  #calendar-now-btn{ /* Today 버튼 */
+    font-size: 15px;
+    font-weight: bolder;
+    color: rgb(170, 170, 170);
+    background-color: #ffffff;
+    border-width: 0;
+    height: min-content;
+  }
+
+  #calendar-prev-btn{ /* < */
+    font-size: 30px;
+    font-weight: bolder;
+    background-color: #ffffff;
+    border-width: 0;
+  }
+
+  #calendar-next-btn{ /* > */
+    font-size: 30px;
+    font-weight: bolder;
+    background-color: #ffffff;
+    border-width: 0;
+  }
+
+  .calendar-item {
+    display: inline-block;
+    vertical-align: bottom;
+    width: calc(97% / 7);
+    height: 130px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0.2%;
+  }
+
+  .calendar-span { /* 일 */
+    display: block;
+    font-size: 18px;
+    font-weight: bolder;
+  }
+
+  #show_detail{ /* 일 a 태그 */
+    color: rgb(51, 51, 51);
+    text-decoration: none;
+    margin-right: 7px;
+  }
+
+  .prevmonth {
+    background-color:rgb(194,194,194);
+    opacity: 0.5;
+  }
+
+  .thismonth {
+    background-color:#bdd7ff;
+  }
+
+  .nextmonth {
+    background-color:rgb(194,194,194);
+    opacity: 0.5;
+  }
+  
+  .today {
+    color: rgb(194, 194, 194);
+    background-color:#feffbd;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .calendar-nav{ /* 학사일정, 급식 / 전체 일정 탭 전체 */
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-bottom: 3px;
+    padding: 0;
+  }
+   
+  .calendar-nav-item{ /* 학사일정, 급식 / 전체 일정 탭 */
+    display: inline-block;
+  }
+
+  .calendar-nav-btn{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bolder;
+    color: rgb(51, 51, 51);
+    border-radius: 10px 10px 0 0;
+    padding: 10px 10px;
+    font-size: 20px;
+    border: none;
+    background-color: rgb(194, 194, 194);
+    opacity: 0.5;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: 0.5s;
+  }
+
+  .selected{
+    opacity: 1;
+  }
+
+  /* ------------------------------------- (하단) 상세 일정 -------------------------------------*/
+  #detail_h3{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 23px;
+    font-weight: bolder;
+    padding: 5px 1px 5px 1px;
+    background-color: rgb(255, 242, 204);
+    border-radius: 5px;
+    margin-bottom: 0px;
+  }
+
+  #detail_table{
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  #table_title{
+    font-size: 20px;
+    font-weight: bolder;
+    text-align: -webkit-center;
+    height: 70px;
+  }
+
+  #detail_tbody{
+    font-size: 17px;
+    text-align: -webkit-center;
+    line-height: 35px;
+  }

@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+<!-- 아마 안쓰는 html -->
+
+{% block title %}Detail Solo Calendar{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="/css/add_calendar.css">
+{% endblock %}
+
+{% block content %}
+<div>
+    <span class="user">작성자</span>
+    <div>{{ solo_calendar.user_name }}</div>
+    <span class="title">제목</span>
+    <div>{{ solo_calendar.subject }}</div>
+    <span class="content">내용</span>
+    <div>{{ solo_calendar.content }}</div>
+    <span class="content">시작날짜</span>
+    <div>{{ solo_calendar.start_date }}</div>
+    <span class="content">끝날짜</span>
+    <div>{{ solo_calendar.end_date }}</div>
+</div>
+{% endblock %}

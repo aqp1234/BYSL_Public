@@ -1,0 +1,19 @@
+01 ) main 참고 사항
+
+변수 정보
+exuser_workspace = 닉네임 및 색깔 받아오는 변수 (layout or workspace/main 에 적용)
+exuser_workspace.nick = 해당 워크스페이스에서의 사용자 닉네임
+exuser_workspace.color = 해당 워크스페이스에서의 사용자 색깔
+
+여기는 해당 워크스페이스에 있는 모든 자료를 보여줘야 하므로 shares 라는 변수명으로 받아옴
+html에서는 {% for share in shares %} 로 for문 돌리면 됨
+share = share 자료에 대한 전반적인 내용 (detail.html 에 적용)
+share.workspace_id = 해당 자료의 workspace_id
+share.user_id = 해당 자료 작성자의 id값
+share.user_name = 해당 자료 작성자의 닉네임 값 (db에 저장할때 nick 저장하도록 함)
+share.subject = 해당 자료의 제목
+share.content = 해당 자료의 내용
+share.file = 해당 자료 ( 아마 자료가 저장된 url을 저장할 것 같음 확정X)
+share.createdAt = 해당 자료를 올린 시간
+
+workspace_id = 워크스페이스 아이디

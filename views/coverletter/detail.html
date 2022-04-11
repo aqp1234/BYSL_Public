@@ -1,0 +1,190 @@
+{% extends 'layout.html' %}
+
+{% block title %}Coverletter - Detail{% endblock %}
+
+{% block content %}
+<!-- 여기부터 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<!-- 여기까지 댓글 기능 css 어떻게 해야할 지 모르겠어서 부트스트랩 사용한거 긁어 온거임 -->
+<link rel="stylesheet" type="text/css" href="/css/coverletter.css">
+{% if coverletter.user_id == user.id %}
+<a href='/coverletter/{{solo_workspace.id}}' id='exit-btn'>◀</a>
+<span class="text_deco11"><a href='/coverletter/{{solo_workspace.id}}/change/{{coverletter._id}}' class="text_deco12">글 수정</a></span>
+<span class="text_deco11"><a href='#' onclick="deletethis()" class="text_deco12">글 삭제</a></span>
+<span class="text_deco11"><a href='#' onclick="openInvitePage()" class="text_deco12" id="staffinvitebtn" data-type="coverletter">글 공유</a></span>
+{% endif %}
+
+<div id="detail_top">
+    <hr class="line_deco01" width = "100%" color="#414141">
+        <div class="detail_title">{{coverletter.subject}}</div>
+    <hr class="line_deco01" width = "100%" color="#414141">
+</div>
+<!-- 글이 길어질 경우 스크롤 처리 해놓음 -->
+<div readonly id="detail_body">{{coverletter.content}}</div>
+<hr class="line_deco01" width = "100%" color="#414141">
+</div>
+
+<!-- 여기부터 -->
+<h4 class="mt-3">Comments</h4>
+{% if(comments.length) %}
+    <div class="mt-3 border-bottom">
+        {% for comment in comments %}
+            <div class="border-top pt-1 pb-1">
+                {% if comment.is_deleted %}
+                    <div class="text-muted p-2">(Deleted Comment)</div>
+                {% else %}
+                <div class="row">
+                    <div class="col-3 col-md-2 col-lg-1 pl-4">
+                        {{ comment.user_name }}
+                    </div>
+                    <div class="col-9 col-md-10 col-lg-11">
+                        <div class="comment-show" id="comment-show">
+                            <div class="comment">
+                                <div class="comment-comment mb-3">
+                                    {{ comment.comment }}
+                                </div>
+                                <small class="d-block">
+                                    (Created: <span class="comment-createdAt">{{ comment.createdAt }}</span>)
+                                    {% if comment.createdAt.getTime() != comment.updatedAt.getTime() %}
+                                    (Updated: <span class="comment-updatedAt">{{ comment.updatedAt }}</span>)
+                                    {% endif %}
+                                </small>
+                                <br>
+                                {% if comment.user_id == user.id %}
+                                <small class="d-block">
+                                    <a href="#comment_edit" onclick="editCommentbtn('{{loop.index0}}')">Edit</a>
+                                    |
+                                    <form style="display: inline" action="" method="" id="delete_comment_form">
+                                        <a href="#delete_comment_form" onclick="deleteComment('{{comment._id}}')">Delete</a>
+                                    </form>
+                                </small>
+                                {% endif %}
+                            </div>
+                            <div class="comment_edit" style="display: none">
+                                <div class="mt-3">
+                                    <form action="{{ coverletter._id }}/comment/{{ comment._id }}" method="PUT" class="comment_edit_form">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <textarea rows="2" class="form-control" name="comment" id="comment">{{ comment.comment }}</textarea>
+                                            </div>
+                                            <div class="col-4">
+                                                <button type="button" class="btn btn-primary h-100 mr-2" data-id="{{loop.index0}}" data-comment_id="{{comment._id}}" onclick="onEditComment(this)">Edit Comment</button>
+                                                <a href="#comment_edit_cancel" onclick="editCommentCancelbtn('{{loop.index0}}')">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+<div class="mt-3">
+    <form action="./{{ coverletter._id }}/comment" method="post" id="comment_form">
+        <div class="row">
+            <div class="col-8">
+                <textarea rows="2" class="form-control" name="comment" id="comment"></textarea>
+            </div>
+            <div class="col-4">
+                <button type="button" class="btn btn-primary h-100 mr-2" onclick="onSubmit()">Add Comment</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 여기까지 댓글 기능 / class 마음대로 건드려도 되고 css 부트스트랩으로 적용되어있음 css도 변경하고 싶으면 변경 가능-->
+
+{% endblock %}
+
+{% block script %}
+<script>
+    const body = document.getElementById('detail_body');
+    body.innerHTML = body.innerText;
+</script>
+<script>
+    const deletethis = async() => {
+        await fetch(location.pathname, { method: 'DELETE' })
+        .then((data) => {
+            alert("삭제 완료되었습니다.");
+            location.href = "/coverletter/{{solo_workspace.id}}";
+        })
+        .catch((err) => {
+            alert("이미 삭제된 학생부입니다.");
+            location.href = "/coverletter/{{solo_workspace.id}}";
+        });
+    }
+</script>
+<script>
+    const onSubmit = () => {
+        if(!comment_form.comment.value){
+            alert("댓글을 입력해주세요.");
+        }else{
+            comment_form.submit();
+        }
+    }
+    const editCommentbtn = (index) => {
+        document.getElementsByClassName('comment_edit')[index].style.display = 'block';
+        document.getElementsByClassName('comment')[index].style.display = 'none';
+    }
+    const editCommentCancelbtn = (index) => {
+        document.getElementsByClassName('comment_edit')[index].style.display = 'none';
+        document.getElementsByClassName('comment')[index].style.display = 'block';
+    }
+    const onEditComment = async (e) => {
+        const form = document.getElementsByClassName('comment_edit_form')[e.dataset.id];
+        if(!form.comment.value){
+            alert("댓글을 입력해주세요.");
+        }else{
+            await fetch(`${location.pathname}/comment/${e.dataset.comment_id}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    comment: form.comment.value,
+                }),
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                alert(data.msg);
+                location.href = data.url;
+            });
+        }
+    }
+    const deleteComment = async(comment_id) => {
+        if(confirm("정말로 댓글을 삭제하시겠습니까?")){
+            await fetch(`${location.pathname}/comment/${comment_id}`, {
+                method: 'DELETE',
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                alert(data.msg);
+                location.href = data.url;
+            });
+        }
+    }
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
+<script>
+    const createdAt = document.getElementsByClassName("comment-createdAt");
+    for(i = 0; i < createdAt.length; i++){
+        createdAt[i].textContent = moment(createdAt[i].textContent).format('YYYY년 MM월 DD일 hh시 mm분');
+    }
+    const updatedAt = document.getElementsByClassName("comment-updatedAt");
+    for(i = 0; i < updatedAt.length; i++){
+        updatedAt[i].textContent = moment(updatedAt[i].textContent).format('YYYY년 MM월 DD일 hh시 mm분');
+    }
+</script>
+<script>
+    const openInvitePage = () => {
+        window.name = 'parentForm';
+        openWin = window.open(`/staffinvite?url=${location.pathname}`, 'childForm', 'width=570, height=400, resizable=no, scrollbars=yes');
+    }
+</script>
+{% endblock %}

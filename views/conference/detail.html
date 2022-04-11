@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block title %}Conference - Detail{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="/css/conference.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+<a href='/conference/{{user_workspace.workspace_id}}' id='exit-btn'>◀</a>
+<span class="text_deco11"><a href='/conference/{{user_workspace.workspace_id}}/change/{{conference._id}}' class="text_deco12">글 수정</a></span>
+<span class="text_deco11"><a href='/conference/{{user_workspace.workspace_id}}/delete/{{conference._id}}' class="text_deco12">글 삭제</a></span>
+
+<div id="detail_top">
+    <hr class="line_deco01" width = "100%" color="#414141">
+        <div class="detail_title">{{conference.subject}}</div>
+    <hr class="line_deco01" width = "100%" color="#414141">
+</div>
+<!-- 글이 길어질 경우 스크롤 처리 해놓음 -->
+<div readonly id="detail_body">{{conference.content}}</div>
+<hr class="line_deco01" width = "100%" color="#414141">
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    const body = document.getElementById('detail_body');
+    body.innerHTML = body.innerText;
+</script>
+{% endblock %}

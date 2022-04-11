@@ -1,0 +1,60 @@
+#room_main_box{
+    margin-top: -4.5px;
+}
+
+.br{
+    float: right;
+    margin-bottom: 10px;
+}
+
+.chat_maker{
+    text-decoration:none;
+}
+
+.text_deco_01{
+    margin-right: 10px;
+    font-size: 25px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bolder;
+    color: rgb(66, 65, 65);
+}
+
+.text_deco_02{
+    font-size: 17px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: rgb(66, 65, 65);
+    position: relative;
+    top: -2px;
+}
+
+#chat_room_show{
+    position: static;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.chatroomname{
+    margin-left: 20px;
+    font-size: 17px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bolder;
+}
+
+.join-btn{
+    margin-right: 20px;
+    border-radius: 5px;
+    border: 0;
+    outline: 0;
+    width: 80px;
+    height: 50px;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.join-btn:hover{
+    background-color: rgb(185, 185, 185);
+}

@@ -1,0 +1,84 @@
+body {
+    font-family:'Cabin' ,'Noto Sans KR', 'sans-serif';
+    background-color:#bdd7ff;
+}
+
+@font-face {
+    font-family: 'Cabin';
+    font-style: normal;
+    font-weight: 300;
+    src: local('※'),
+    url('../fonts/Cabin-Regular.eot'),
+    url('../fonts/Cabin-Regular.eot#iefix') format('embedded-opentype')
+    url('../fonts/Cabin-Regular.woff') format('woff'),
+    url('../fonts/Cabin-Regular.otf') format('opentype'),
+    url('../fonts/Cabin-Regular.ttf') format('truetype');
+    unicode-range:U+0041-005A, U+0061-007A, U+0030-0039;
+}
+
+#join-form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.input-what{
+    color: rgb(252, 252, 252);
+    font-size: 25px;
+    font-weight: bolder;
+    margin-bottom: 5px;
+}
+
+#subject{
+    width: 500px;
+    height: 35px;
+    padding: 1px 2px 1px 2px;
+    border-width: 0;
+    border-radius: 5px;
+    background-color: rgb(243, 243, 243);
+}
+
+#content{
+    width: 500px;
+    height: 35px;
+    padding: 1px 2px 1px 2px;
+    border-width: 0;
+    border-radius: 5px;
+    background-color: rgb(243, 243, 243);
+}
+
+#start_date{
+    width: 500px;
+    height: 35px;
+    padding: 1px 5px 1px 5px;
+    border-width: 0;
+    border-radius: 5px;
+    background-color: rgb(243, 243, 243);
+    font-size: 15px;
+    font-weight: bolder;
+    color: rgb(51, 51, 51);
+}
+
+#end_date{
+    width: 500px;
+    height: 35px;
+    padding: 1px 5px 1px 5px;
+    border-width: 0;
+    border-radius: 5px;
+    background-color: rgb(243, 243, 243);
+    font-size: 15px;
+    font-weight: bolder;
+    color: rgb(51, 51, 51);
+}
+
+#calendar-btn{
+    display: inline-block;
+    width: 200px;
+    height: 40px;
+    margin-top: 15px;
+    font-size: 15px;
+    font-weight: bolder;
+    color: rgb(51, 51, 51);
+    border-width: 0;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+}
